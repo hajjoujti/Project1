@@ -15,8 +15,8 @@ public class Stagiaire {
 	
 	public Stagiaire() {
 		super();
-		refGauche= 0L; 
-		refDroite = 0L; 
+		refGauche= 0; 
+		refDroite = 0; 
 		stagiaireDroite = null;
 		stagiaireGauche = null; 
 	}
@@ -29,8 +29,8 @@ public class Stagiaire {
 		this.dep = dep;
 		this.formation = formation;
 		this.annee = annee;
-		refGauche= 0L; 
-		refDroite = 0L; 
+		refGauche= 0; 
+		refDroite = 0; 
 		stagiaireDroite = null;
 		stagiaireGauche = null; 
 	}
