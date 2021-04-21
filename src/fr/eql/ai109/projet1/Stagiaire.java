@@ -4,7 +4,7 @@ public class Stagiaire {
 
 	private String nom;
 	private String prenom; 
-	private int dep; 
+	private String dep; 
 	private String formation; 
 	private int annee; 
 	private long refGauche; 
@@ -22,7 +22,7 @@ public class Stagiaire {
 	}
 	
 	
-	public Stagiaire(String nom, String prenom, int dep, String formation, int annee) {
+	public Stagiaire(String nom, String prenom, String dep, String formation, int annee) {
 		super();
 		this.nom = nom;
 		this.prenom = prenom;
@@ -36,13 +36,110 @@ public class Stagiaire {
 	}
 
 
+	@Override
+	public String toString() {
+		return "Stagiaire [nom=" + nom + ", prenom=" + prenom + ", dep=" + dep + ", formation=" + formation + ", annee="
+				+ annee + ", refGauche=" + refGauche + ", refDroite=" + refDroite + ", stagiaireDroite="
+				+ stagiaireDroite + ", stagiaireGauche=" + stagiaireGauche + "]";
+	}
+
+
+	public String getNom() {
+		return nom;
+	}
+
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
+
+
+	public String getDep() {
+		return dep;
+	}
+
+
+	public void setDep(String dep) {
+		this.dep = dep;
+	}
+
+
+	public String getFormation() {
+		return formation;
+	}
+
+
+	public void setFormation(String formation) {
+		this.formation = formation;
+	}
+
+
+	public int getAnnee() {
+		return annee;
+	}
+
+
+	public void setAnnee(int annee) {
+		this.annee = annee;
+	}
+
+
+	public long getRefGauche() {
+		return refGauche;
+	}
+
+
+	public void setRefGauche(long refGauche) {
+		this.refGauche = refGauche;
+	}
+
+
+	public long getRefDroite() {
+		return refDroite;
+	}
+
+
+	public void setRefDroite(long refDroite) {
+		this.refDroite = refDroite;
+	}
+
+
+	public Stagiaire getStagiaireDroite() {
+		return stagiaireDroite;
+	}
+
+
+	public void setStagiaireDroite(Stagiaire stagiaireDroite) {
+		this.stagiaireDroite = stagiaireDroite;
+	}
+
+
+	public Stagiaire getStagiaireGauche() {
+		return stagiaireGauche;
+	}
+
+
+	public void setStagiaireGauche(Stagiaire stagiaireGauche) {
+		this.stagiaireGauche = stagiaireGauche;
+	}
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + annee;
-		result = prime * result + dep;
+		result = prime * result + ((dep == null) ? 0 : dep.hashCode());
 		result = prime * result + ((formation == null) ? 0 : formation.hashCode());
 		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
 		result = prime * result + ((prenom == null) ? 0 : prenom.hashCode());
@@ -65,7 +162,10 @@ public class Stagiaire {
 		Stagiaire other = (Stagiaire) obj;
 		if (annee != other.annee)
 			return false;
-		if (dep != other.dep)
+		if (dep == null) {
+			if (other.dep != null)
+				return false;
+		} else if (!dep.equals(other.dep))
 			return false;
 		if (formation == null) {
 			if (other.formation != null)
@@ -99,108 +199,7 @@ public class Stagiaire {
 		return true;
 	}
 
-
-
-
-
-
-
-	@Override
-	public String toString() {
-		return "Stagiaire [nom=" + nom + ", prenom=" + prenom + ", dep=" + dep + ", formation=" + formation + ", annee="
-				+ annee + ", refGauche=" + refGauche + ", refDroite=" + refDroite + ", stagiaireDroite="
-				+ stagiaireDroite + ", stagiaireGauche=" + stagiaireGauche + "]";
-	}
-
-
-	public String getNom() {
-		return nom;
-	}
-
-
-	public String getPrenom() {
-		return prenom;
-	}
-
-
-	public int getDep() {
-		return dep;
-	}
-
-
-	public String getFormation() {
-		return formation;
-	}
-
-
-	public int getAnnee() {
-		return annee;
-	}
-
-
-	public long getRefGauche() {
-		return refGauche;
-	}
-
-
-	public long getRefDroite() {
-		return refDroite;
-	}
-
-
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
-
-
-	public void setDep(int dep) {
-		this.dep = dep;
-	}
-
-
-	public void setFormation(String formation) {
-		this.formation = formation;
-	}
-
-
-	public void setAnnee(int annee) {
-		this.annee = annee;
-	}
-
-
-	public void setRefGauche(long refGauche) {
-		this.refGauche = refGauche;
-	}
-
-
-	public void setRefDroite(long refDroite) {
-		this.refDroite = refDroite;
-	}
-
-
-	public Stagiaire getStagiaireDroite() {
-		return stagiaireDroite;
-	}
-
-
-	public Stagiaire getStagiaireGauche() {
-		return stagiaireGauche;
-	}
-
-
-	public void setStagiaireDroite(Stagiaire stagiaireDroite) {
-		this.stagiaireDroite = stagiaireDroite;
-	}
-
-
-	public void setStagiaireGauche(Stagiaire stagiaireGauche) {
-		this.stagiaireGauche = stagiaireGauche;
-	} 
+	
 	
 	
 }
