@@ -9,12 +9,16 @@ public class Stagiaire {
 	private int annee; 
 	private long refGauche; 
 	private long refDroite;
+	private Stagiaire stagiaireDroite; 
+	private Stagiaire stagiaireGauche; 
 	
 	
 	public Stagiaire() {
 		super();
 		refGauche= 0L; 
 		refDroite = 0L; 
+		stagiaireDroite = null;
+		stagiaireGauche = null; 
 	}
 	
 	
@@ -27,6 +31,8 @@ public class Stagiaire {
 		this.annee = annee;
 		refGauche= 0L; 
 		refDroite = 0L; 
+		stagiaireDroite = null;
+		stagiaireGauche = null; 
 	}
 
 
@@ -42,6 +48,8 @@ public class Stagiaire {
 		result = prime * result + ((prenom == null) ? 0 : prenom.hashCode());
 		result = prime * result + (int) (refDroite ^ (refDroite >>> 32));
 		result = prime * result + (int) (refGauche ^ (refGauche >>> 32));
+		result = prime * result + ((stagiaireDroite == null) ? 0 : stagiaireDroite.hashCode());
+		result = prime * result + ((stagiaireGauche == null) ? 0 : stagiaireGauche.hashCode());
 		return result;
 	}
 
@@ -78,6 +86,16 @@ public class Stagiaire {
 			return false;
 		if (refGauche != other.refGauche)
 			return false;
+		if (stagiaireDroite == null) {
+			if (other.stagiaireDroite != null)
+				return false;
+		} else if (!stagiaireDroite.equals(other.stagiaireDroite))
+			return false;
+		if (stagiaireGauche == null) {
+			if (other.stagiaireGauche != null)
+				return false;
+		} else if (!stagiaireGauche.equals(other.stagiaireGauche))
+			return false;
 		return true;
 	}
 
@@ -90,7 +108,8 @@ public class Stagiaire {
 	@Override
 	public String toString() {
 		return "Stagiaire [nom=" + nom + ", prenom=" + prenom + ", dep=" + dep + ", formation=" + formation + ", annee="
-				+ annee + ", refGauche=" + refGauche + ", refDroite=" + refDroite + "]";
+				+ annee + ", refGauche=" + refGauche + ", refDroite=" + refDroite + ", stagiaireDroite="
+				+ stagiaireDroite + ", stagiaireGauche=" + stagiaireGauche + "]";
 	}
 
 
@@ -161,6 +180,26 @@ public class Stagiaire {
 
 	public void setRefDroite(long refDroite) {
 		this.refDroite = refDroite;
+	}
+
+
+	public Stagiaire getStagiaireDroite() {
+		return stagiaireDroite;
+	}
+
+
+	public Stagiaire getStagiaireGauche() {
+		return stagiaireGauche;
+	}
+
+
+	public void setStagiaireDroite(Stagiaire stagiaireDroite) {
+		this.stagiaireDroite = stagiaireDroite;
+	}
+
+
+	public void setStagiaireGauche(Stagiaire stagiaireGauche) {
+		this.stagiaireGauche = stagiaireGauche;
 	} 
 	
 	
