@@ -1,21 +1,11 @@
 package fr.eql.ai109.projet1;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-public class AlgoArbreDeTri {
+public class AlgoArbreDeTri implements Parametre {
 	Stagiaire root;
 	RandomAccessFile raf = null;
-	String cheminFichierCible = FichierInitial.cheminFichierCible;
-	File f = new File(cheminFichierCible);
-
-	final int tailleChampMax = 30;
-
-
-	final int nombreChamp = 5;
-	final int tailleLong = 8;
 
 	long pointeur = 0;
 	long pointeurEnfantGauche = 0;
@@ -179,7 +169,7 @@ public class AlgoArbreDeTri {
 		try {
 			raf = new RandomAccessFile(cheminFichierCible, "rw");
 
-			raf.seek(f.length());
+			raf.seek(fichierCible.length());
 			// ecririe le nom et les espaces pour compléter la taille
 			byte[] b = stagiaire.getNom().getBytes();
 			raf.write(b);
@@ -245,18 +235,6 @@ public class AlgoArbreDeTri {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public int getTailleChampMax() {
-		return tailleChampMax;
-	}
-
-	public int getNombreChamp() {
-		return nombreChamp;
-	}
-
-	public int getTailleLong() {
-		return tailleLong;
 	}
 }
 
