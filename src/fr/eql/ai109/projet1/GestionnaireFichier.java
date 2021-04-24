@@ -6,6 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GestionnaireFichier implements Parametre{
 		Stagiaire root;
@@ -105,7 +107,7 @@ public class GestionnaireFichier implements Parametre{
 				try {
 				parent = nouveauStagiaire;
 				// ecriture nouveau stagiaire
-				ecritureNouveauStagiaireDansFichier(parent);
+				ecrireNouveauStagiaireDansFichier(parent);
 				// verification de la reference droite du parent et mettre a jour pour nouveau stagiaire
 				if (pointeurEnfantDroite != 0) {
 					raf.seek(pointeurParent + (tailleChampMax * 5) + tailleLong);
@@ -128,7 +130,7 @@ public class GestionnaireFichier implements Parametre{
 				nouveauStagiairePlusPetitParent(parent, nouveauStagiaire);
 				
 			} else if (nouveauStagiaire.getNom().toUpperCase().compareTo(parent.getNom().toUpperCase()) > 0) {
-				nouvequStagiairePlusGrandParent(parent, nouveauStagiaire);
+				nouveauStagiairePlusGrandParent(parent, nouveauStagiaire);
 			} else {
 				// comparaison prenom
 				comparaisonPrenom(parent, nouveauStagiaire);
@@ -143,7 +145,7 @@ public class GestionnaireFichier implements Parametre{
 				nouveauStagiairePlusPetitParent(parent, nouveauStagiaire);
 				
 			} else if (nouveauStagiaire.getPrenom().toUpperCase().compareTo(parent.getPrenom().toUpperCase()) > 0) {
-				nouvequStagiairePlusGrandParent(parent, nouveauStagiaire);
+				nouveauStagiairePlusGrandParent(parent, nouveauStagiaire);
 			}
 		}
 
@@ -152,7 +154,7 @@ public class GestionnaireFichier implements Parametre{
 			pointeurParent = parent.getPositionStagiaire();
 			// verification valeur reference gauche du parent
 			if (parent.getRefGauche() != -1) {
-				parent.setStagiaireGauche(lectureStagiaire(parent.getRefGauche()));
+				parent.setStagiaireGauche(lireStagiaire(parent.getRefGauche()));
 			}
 			// enregisterer position de nouveau stagiaire dans reference gauche parent
 			parent.setRefGauche(nouveauStagiaire.getPositionStagiaire());
@@ -164,12 +166,12 @@ public class GestionnaireFichier implements Parametre{
 			parent.setStagiaireGauche(addRecursive(parent.getStagiaireGauche(), nouveauStagiaire));
 		}
 
-		private void nouvequStagiairePlusGrandParent(Stagiaire parent, Stagiaire nouveauStagiaire) {
+		private void nouveauStagiairePlusGrandParent(Stagiaire parent, Stagiaire nouveauStagiaire) {
 			// enregistrer position parent
 			pointeurParent = parent.getPositionStagiaire();	
 			// verification valeur reference gauche du parent
 			if (parent.getRefDroite() != -1) {
-				parent.setStagiaireDroite(lectureStagiaire(parent.getRefDroite()));
+				parent.setStagiaireDroite(lireStagiaire(parent.getRefDroite()));
 			}
 			// enregisterer position de nouveau stagiaire dans reference droite parent
 			parent.setRefDroite(nouveauStagiaire.getPositionStagiaire());
@@ -181,7 +183,7 @@ public class GestionnaireFichier implements Parametre{
 			parent.setStagiaireDroite(addRecursive(parent.getStagiaireDroite(), nouveauStagiaire));
 		}
 		
-		public Stagiaire lectureStagiaire(long positionStagiaire) {
+		public Stagiaire lireStagiaire(long positionStagiaire) {
 			try {
 				raf = new RandomAccessFile(cheminFichierCible, "r");
 				raf.seek(positionStagiaire);
@@ -196,7 +198,7 @@ public class GestionnaireFichier implements Parametre{
 				long refDroite;
 
 				Stagiaire stagiaireActuel;
-
+				// lecture nom
 				b = new byte[tailleChampMax];
 				raf.read(b);
 				nom = new String(b);
@@ -221,13 +223,21 @@ public class GestionnaireFichier implements Parametre{
 				raf.read(b);
 				anneeString = new String(b);
 				anneeString = anneeString.trim();
+				// parser string annee en integer
 				annee = Integer.parseInt(anneeString);
+				// lecture reference gauche
 				refGauche = raf.readLong();
+				// lecture reference droite
 				refDroite = raf.readLong();
+				// lecture position du stagigiaire actuel
 				positionStagiaire = raf.readLong();
+				// construction du stagiaire actuel
 				stagiaireActuel = new Stagiaire(nom, prenom, dep, formation, annee);
+				// attribution de la valeur de refGauche dans le stagiaire actuel
 				stagiaireActuel.setRefGauche(refGauche);
+				// attribution de la valeur de refDroite dans le stagiaire actuel
 				stagiaireActuel.setRefDroite(refDroite);
+				// attribution de la position la position du stagiaire actuel
 				stagiaireActuel.setPositionStagiaire(positionStagiaire);
 				return stagiaireActuel;
 			} catch (IOException e) {
@@ -238,72 +248,13 @@ public class GestionnaireFichier implements Parametre{
 			
 		}
 	
-		private void ecritureNouveauStagiaireDansFichier(Stagiaire stagiaire) {
+		private void ecrireNouveauStagiaireDansFichier(Stagiaire stagiaire) {
 			try {
 				raf = new RandomAccessFile(cheminFichierCible, "rw");
 
 				raf.seek(fichierCible.length());
-				// ecririe le nom et les espaces pour compléter la taille
-				byte[] b = stagiaire.getNom().getBytes();
-				raf.write(b);
-				int nbEspaces = tailleChampMax - stagiaire.getNom().length();
-				b = new byte[nbEspaces];
-				for (int i = 0; i < b.length; i++) {
-					b[i] = ' ';
-				}
-				raf.write(b);
-
-				// ecririe le prenom et les espaces pour compléter la taille
-				b = stagiaire.getPrenom().getBytes();
-				raf.write(b);
-				nbEspaces = tailleChampMax - stagiaire.getPrenom().length();
-				b = new byte[nbEspaces];
-				for (int i = 0; i < b.length; i++) {
-					b[i] = ' ';
-				}
-				raf.write(b);
-
-				// ecririe le departement et les espaces pour compléter la taille
-				b = stagiaire.getDep().getBytes();
-				raf.write(b);
-				nbEspaces = tailleChampMax - stagiaire.getDep().length();
-				b = new byte[nbEspaces];
-				for (int i = 0; i < b.length; i++) {
-					b[i] = ' ';
-				}
-				raf.write(b);
-
-				// ecririe la formation et les espaces pour compléter la taille
-				b = stagiaire.getFormation().getBytes();
-				raf.write(b);
-				nbEspaces = tailleChampMax - stagiaire.getFormation().length();
-				b = new byte[nbEspaces];
-				for (int i = 0; i < b.length; i++) {
-					b[i] = ' ';
-				}
-				raf.write(b);
-
-				// ecririe l'annee et les espaces pour compléter la taille
-				b = Integer.toString(stagiaire.getAnnee()).getBytes();
-				raf.write(b);
-				nbEspaces = tailleChampMax - Integer.toString(stagiaire.getAnnee()).length();
-				b = new byte[nbEspaces];
-				for (int i = 0; i < b.length; i++) {
-					b[i] = ' ';
-				}
-				raf.write(b);
-
-				// ecririe le pointeur de stagiaire gauche
-				raf.writeLong(-1);
-				System.out.println("refGauche " + stagiaire.getNom() + " " + stagiaire.getRefGauche());
-
-				// ecririe le pointeur de stagiaire droite
-				raf.writeLong(-1);
-				System.out.println("refDroite " + stagiaire.getRefDroite());
 				
-				// ecririe le pointeur du debut du stagiaire actuel
-				raf.writeLong(stagiaire.getPositionStagiaire());
-				System.out.println("refStagiaire " + stagiaire.getPositionStagiaire());
+				ecrireStagiaire(stagiaire);
 				
 				pointeur = raf.getFilePointer();
 
@@ -312,6 +263,67 @@ public class GestionnaireFichier implements Parametre{
 				e.printStackTrace();
 			}
 
+		}
+
+		private void ecrireStagiaire(Stagiaire stagiaire) throws IOException {
+			// ecririe le nom et les espaces pour compléter la taille
+			byte[] b = stagiaire.getNom().getBytes();
+			raf.write(b);
+			int nbEspaces = tailleChampMax - stagiaire.getNom().length();
+			b = new byte[nbEspaces];
+			for (int i = 0; i < b.length; i++) {
+				b[i] = ' ';
+			}
+			raf.write(b);
+
+			// ecririe le prenom et les espaces pour compléter la taille
+			b = stagiaire.getPrenom().getBytes();
+			raf.write(b);
+			nbEspaces = tailleChampMax - stagiaire.getPrenom().length();
+			b = new byte[nbEspaces];
+			for (int i = 0; i < b.length; i++) {
+				b[i] = ' ';
+			}
+			raf.write(b);
+
+			// ecririe le departement et les espaces pour compléter la taille
+			b = stagiaire.getDep().getBytes();
+			raf.write(b);
+			nbEspaces = tailleChampMax - stagiaire.getDep().length();
+			b = new byte[nbEspaces];
+			for (int i = 0; i < b.length; i++) {
+				b[i] = ' ';
+			}
+			raf.write(b);
+
+			// ecririe la formation et les espaces pour compléter la taille
+			b = stagiaire.getFormation().getBytes();
+			raf.write(b);
+			nbEspaces = tailleChampMax - stagiaire.getFormation().length();
+			b = new byte[nbEspaces];
+			for (int i = 0; i < b.length; i++) {
+				b[i] = ' ';
+			}
+			raf.write(b);
+
+			// ecririe l'annee et les espaces pour compléter la taille
+			b = Integer.toString(stagiaire.getAnnee()).getBytes();
+			raf.write(b);
+			nbEspaces = tailleChampMax - Integer.toString(stagiaire.getAnnee()).length();
+			b = new byte[nbEspaces];
+			for (int i = 0; i < b.length; i++) {
+				b[i] = ' ';
+			}
+			raf.write(b);
+
+			// ecririe le pointeur de stagiaire gauche
+			raf.writeLong(-1);
+
+			// ecririe le pointeur de stagiaire droite
+			raf.writeLong(-1);
+			
+			// ecririe le pointeur du debut du stagiaire actuel
+			raf.writeLong(stagiaire.getPositionStagiaire());
 		}
 		
 		public void traverseFichierOrdreCroissant() {
@@ -338,19 +350,111 @@ public class GestionnaireFichier implements Parametre{
 		private void recursiveLectureTraverseFichierOrdreCroissant(Stagiaire stagiaire, BufferedWriter bw) throws IOException {
 			if (stagiaire != null) {
 		    	if (stagiaire.getRefGauche() != -1) {
-		    		stagiaire.setStagiaireGauche(lectureStagiaire(stagiaire.getRefGauche()));
+		    		stagiaire.setStagiaireGauche(lireStagiaire(stagiaire.getRefGauche()));
 				}
 		    	if (stagiaire.getRefDroite() != -1) {
-		    		stagiaire.setStagiaireDroite(lectureStagiaire(stagiaire.getRefDroite()));
+		    		stagiaire.setStagiaireDroite(lireStagiaire(stagiaire.getRefDroite()));
 				}
 		    	recursiveLectureTraverseFichierOrdreCroissant(stagiaire.getStagiaireGauche(), bw);
 		    	String stagiaireOrdreCroissant = stagiaire.getNom() + "\t" + stagiaire.getPrenom() + "\t" + stagiaire.getDep() 
 		        + "\t" + stagiaire.getFormation() + "\t" + stagiaire.getAnnee();
 		    	bw.write(stagiaireOrdreCroissant);
 		    	bw.newLine();
-		        System.out.println(stagiaire.getNom() + "\t" + stagiaire.getPrenom() + "\t" + stagiaire.getDep() 
-		        + "\t" + stagiaire.getFormation() + "\t" + stagiaire.getAnnee());
 		        recursiveLectureTraverseFichierOrdreCroissant(stagiaire.getStagiaireDroite(), bw);
 		    }
+		}
+		
+		public ArrayList<Stagiaire> traverseFichierRechercheNom(String nom, String elementRecherche) {
+			Stagiaire stagiaire;
+			ArrayList<Stagiaire> stagiaires = new ArrayList<Stagiaire>();
+			try {
+				stagiaire = lecturePremierStagiaireFichierCible();
+				recursiveLectureTraverseFichierRechercheChamps(stagiaire, nom, stagiaires, elementRecherche);
+				
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return stagiaires;
+		}
+		
+		private void recursiveLectureTraverseFichierRechercheChamps(Stagiaire stagiaire, String champ, List<Stagiaire> stagiaires,
+				String elementRecherche) throws IOException {
+			if (stagiaire != null) {
+		    	if (stagiaire.getRefGauche() != -1) {
+		    		stagiaire.setStagiaireGauche(lireStagiaire(stagiaire.getRefGauche()));
+				}
+		    	if (stagiaire.getRefDroite() != -1) {
+		    		stagiaire.setStagiaireDroite(lireStagiaire(stagiaire.getRefDroite()));
+				}
+		    	recursiveLectureTraverseFichierRechercheChamps(stagiaire.getStagiaireGauche(), champ, stagiaires, elementRecherche);
+		    	int lengthChamp = champ.length();
+		    	switch (elementRecherche) {
+		    	case "nom":
+		    		if(stagiaire.getNom().length()>= lengthChamp) {
+		    			if(((String) stagiaire.getNom().toUpperCase().subSequence(0, lengthChamp)).contains(champ.toUpperCase())) {
+		    				stagiaire.setStagiaireDroite(null);
+		    				stagiaire.setStagiaireGauche(null);
+		    				stagiaires.add(stagiaire);
+		    			}
+		    		}
+		    	break;
+		    	case "prenom":
+		    		if(stagiaire.getPrenom().length()>= lengthChamp) {
+		    			if(((String) stagiaire.getPrenom().toUpperCase().subSequence(0, lengthChamp)).contains(champ.toUpperCase())) {
+		    				stagiaire.setStagiaireDroite(null);
+		    				stagiaire.setStagiaireGauche(null);
+		    				stagiaires.add(stagiaire);
+		    			}
+		    		}
+		    	break;
+		    	case "departement":
+		    		if(stagiaire.getDep().length()>= lengthChamp) {
+		    		if(((String) stagiaire.getDep().toUpperCase().subSequence(0, lengthChamp)).contains(champ.toUpperCase())) {
+		    			stagiaire.setStagiaireDroite(null);
+	    				stagiaire.setStagiaireGauche(null);
+		    			stagiaires.add(stagiaire);
+		    		}
+		    		}
+		    	break;
+		    	case "formation":
+		    		if(stagiaire.getFormation().length()>= lengthChamp) {
+		    			if(((String) stagiaire.getFormation().toUpperCase().subSequence(0, lengthChamp)).contains(champ.toUpperCase())) {
+		    				stagiaire.setStagiaireDroite(null);
+		    				stagiaire.setStagiaireGauche(null);
+		    				stagiaires.add(stagiaire);
+		    			}
+		    		}
+		    	break;
+		    	case "annee":
+		    		if((stagiaire.getAnnee() == Integer.parseInt(champ))) {
+		    			stagiaire.setStagiaireDroite(null);
+	    				stagiaire.setStagiaireGauche(null);
+		    			stagiaires.add(stagiaire);
+		    		}
+		    	break;
+		    	}
+		    		
+		        recursiveLectureTraverseFichierRechercheChamps(stagiaire.getStagiaireDroite(), champ, stagiaires, elementRecherche);
+		    }
+		}
+
+		public void modificationStagiaire(Stagiaire stagiaireModifie) {
+			try {
+				raf = new RandomAccessFile(cheminFichierCible, "rw");
+				raf.seek(stagiaireModifie.getPositionStagiaire());
+				ecrireStagiaire(stagiaireModifie);
+				raf.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
 }

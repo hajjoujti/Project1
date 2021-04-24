@@ -1,12 +1,16 @@
 package fr.eql.ai109.projet1;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TestMain implements Parametre {
-	private static GestionnaireFichier gf;
+	private static GestionnaireFichier gf; 
 
 	public static void main(String[] args) {
 		
@@ -48,7 +52,9 @@ public class TestMain implements Parametre {
 //		gf.add(s11);
 //		gf.add(s12);
 		
-//		Stagiaire s13 = new Stagiaire("Ayoub", "Nicolas", "75", "AI 209", 2021);
+//		long start = System.nanoTime();
+		
+//		Stagiaire s13 = new Stagiaire("Ayoub", "Nicolass", "75", "AI 209", 2022);
 //		s13.setPositionStagiaire(fichierCible.length());
 //		gf = new GestionnaireFichier();
 //		gf.add(s13);
@@ -60,7 +66,36 @@ public class TestMain implements Parametre {
 		
 //		gf = new GestionnaireFichier();
 //		gf.traverseFichierOrdreCroissant();
+//		
+//		long duree = System.nanoTime() - start;
+//		double temps = duree / 1000000000.0;
+//		System.out.println(temps);
 		
+//		gf = new GestionnaireFichier();
+//		ArrayList<Stagiaire> stagiaires = gf.traverseFichierRechercheNom("2015", "annee");
+//		try {
+//			FileWriter fw = new FileWriter("C:\\Users\\HAJJ\\Desktop\\extraitRecherche.txt", true);
+//			BufferedWriter bw = new BufferedWriter(fw);
+//			for (Stagiaire stagiaire : stagiaires) {
+//				System.out.println(stagiaire);
+//				bw.write(stagiaire.getNom());
+//				bw.newLine();
+//			}
+//			bw.close();
+//			fw.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		for (Stagiaire stagiaire : stagiaires) {
+//			System.out.println(stagiaire);
+//			conteur++;
+//		}
+//		System.out.println(conteur);
+//		System.out.println(stagiaires.size());
+//		for(int i = 0; i < 1; i++) {
+//			stagiaires[i];
+//		}
 //		try {
 //			RandomAccessFile raf = new RandomAccessFile(cheminFichierCible, "r");
 //			System.out.println(fichierCible.length());

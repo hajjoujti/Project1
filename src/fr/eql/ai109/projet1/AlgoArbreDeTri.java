@@ -41,7 +41,7 @@ public class AlgoArbreDeTri implements Parametre {
 			try {
 			parent = nouveauStagiaire;
 			// ecriture nouveau stagiaire
-			ecritureStagiaireImporteDansFichier(parent);
+			ecrireStagiaireImporteDansFichier(parent);
 			// verification de la reference droite du parent et mettre a jour pour nouveau stagiaire
 			if (pointeurEnfantDroite != 0) {
 				raf.seek(pointeurParent + (tailleChampMax * 5) + tailleLong);
@@ -64,7 +64,7 @@ public class AlgoArbreDeTri implements Parametre {
 			nouveauStagiairePlusPetitParent(parent, nouveauStagiaire);
 			
 		} else if (nouveauStagiaire.getNom().toUpperCase().compareTo(parent.getNom().toUpperCase()) > 0) {
-			nouvequStagiairePlusGrandParent(parent, nouveauStagiaire);
+			nouveauStagiairePlusGrandParent(parent, nouveauStagiaire);
 		} else {
 			// comparaison prenom
 			comparaisonPrenom(parent, nouveauStagiaire);
@@ -79,7 +79,7 @@ public class AlgoArbreDeTri implements Parametre {
 			nouveauStagiairePlusPetitParent(parent, nouveauStagiaire);
 			
 		} else if (nouveauStagiaire.getPrenom().toUpperCase().compareTo(parent.getPrenom().toUpperCase()) > 0) {
-			nouvequStagiairePlusGrandParent(parent, nouveauStagiaire);
+			nouveauStagiairePlusGrandParent(parent, nouveauStagiaire);
 		}
 	}
 
@@ -96,7 +96,7 @@ public class AlgoArbreDeTri implements Parametre {
 		parent.setStagiaireGauche(ajoutRecursive(parent.getStagiaireGauche(), nouveauStagiaire));
 	}
 
-	private void nouvequStagiairePlusGrandParent(Stagiaire parent, Stagiaire nouveauStagiaire) {
+	private void nouveauStagiairePlusGrandParent(Stagiaire parent, Stagiaire nouveauStagiaire) {
 		// enregistrer position parent
 		pointeurParent = parent.getPositionStagiaire();	
 		// enregisterer position de nouveau stagiaire dans reference droite parent
@@ -109,7 +109,7 @@ public class AlgoArbreDeTri implements Parametre {
 		parent.setStagiaireDroite(ajoutRecursive(parent.getStagiaireDroite(), nouveauStagiaire));
 	}
 	
-	public Stagiaire lectureStagiaire(long positionStagiaire) {
+	public Stagiaire lireStagiaire(long positionStagiaire) {
 		try {
 			raf = new RandomAccessFile(cheminFichierCible, "r");
 			raf.seek(positionStagiaire);
@@ -166,7 +166,7 @@ public class AlgoArbreDeTri implements Parametre {
 		
 	}
 
-	private void ecritureStagiaireImporteDansFichier(Stagiaire stagiaire) {
+	private void ecrireStagiaireImporteDansFichier(Stagiaire stagiaire) {
 		try {
 			raf = new RandomAccessFile(cheminFichierCible, "rw");
 
