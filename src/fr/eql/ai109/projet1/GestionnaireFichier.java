@@ -21,7 +21,7 @@ public class GestionnaireFichier implements Parametre{
 		public GestionnaireFichier() {
 			super();
 			try {
-				lecturePremierStagiaireFichierCible();
+				lirePremierStagiaireFichierCible();
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -37,7 +37,7 @@ public class GestionnaireFichier implements Parametre{
 			this.root = root;
 		}
 
-		private Stagiaire lecturePremierStagiaireFichierCible() throws FileNotFoundException, IOException {
+		private Stagiaire lirePremierStagiaireFichierCible() throws FileNotFoundException, IOException {
 			raf = new RandomAccessFile(cheminFichierCible, "r");
 			byte[] b;
 			String nom;
@@ -333,7 +333,7 @@ public class GestionnaireFichier implements Parametre{
 				fichierTrieOrdreCroissant.createNewFile();
 				FileWriter out = new FileWriter(fichierTrieOrdreCroissant, true);
 				BufferedWriter bw = new BufferedWriter(out);
-				stagiaire = lecturePremierStagiaireFichierCible();
+				stagiaire = lirePremierStagiaireFichierCible();
 				recursiveLectureTraverseFichierOrdreCroissant(stagiaire, bw);
 				bw.close();
 				out.close();
@@ -368,7 +368,7 @@ public class GestionnaireFichier implements Parametre{
 			Stagiaire stagiaire;
 			ArrayList<Stagiaire> stagiaires = new ArrayList<Stagiaire>();
 			try {
-				stagiaire = lecturePremierStagiaireFichierCible();
+				stagiaire = lirePremierStagiaireFichierCible();
 				recursiveLectureTraverseFichierRechercheChamps(stagiaire, nom, stagiaires, elementRecherche);
 				
 			} catch (FileNotFoundException e) {
