@@ -48,15 +48,18 @@ public class TestMain implements Parametre {
 //		gf.add(s11);
 //		gf.add(s12);
 		
-//		Stagiaire s13 = new Stagiaire("zzsdfds", "Nicolas", "asdas", "sdgfsd", 2010);
+//		Stagiaire s13 = new Stagiaire("Ayoub", "Nicolas", "75", "AI 209", 2021);
 //		s13.setPositionStagiaire(fichierCible.length());
 //		gf = new GestionnaireFichier();
 //		gf.add(s13);
 		
-//		Stagiaire s14 = new Stagiaire("zssdfds", "Nicolas", "asdas", "sdgfsd", 2010);
+//		Stagiaire s14 = new Stagiaire("zrrsnab", "Nicolas", "asdas", "sdgfsd", 2010);
 //		s14.setPositionStagiaire(fichierCible.length());
 //		gf = new GestionnaireFichier();
 //		gf.add(s14);
+		
+//		gf = new GestionnaireFichier();
+//		gf.traverseFichierOrdreCroissant();
 		
 //		try {
 //			RandomAccessFile raf = new RandomAccessFile(cheminFichierCible, "r");

@@ -14,6 +14,7 @@ public class AlgoArbreDeTri implements Parametre {
 
 	public AlgoArbreDeTri() {
 		super();
+		fichierCible.delete();
 		this.setRoot(null);
 	}
 	

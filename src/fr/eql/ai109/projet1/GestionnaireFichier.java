@@ -1,7 +1,9 @@
 package fr.eql.ai109.projet1;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
@@ -33,7 +35,7 @@ public class GestionnaireFichier implements Parametre{
 			this.root = root;
 		}
 
-		private void lecturePremierStagiaireFichierCible() throws FileNotFoundException, IOException {
+		private Stagiaire lecturePremierStagiaireFichierCible() throws FileNotFoundException, IOException {
 			raf = new RandomAccessFile(cheminFichierCible, "r");
 			byte[] b;
 			String nom;
@@ -82,6 +84,7 @@ public class GestionnaireFichier implements Parametre{
 			stagiaireActuel.setPositionStagiaire(positionStagiaire);
 			this.setRoot(stagiaireActuel);
 			raf.close();
+			return this.root;
 		}	
 		
 		public Stagiaire getRoot() {
@@ -309,5 +312,45 @@ public class GestionnaireFichier implements Parametre{
 				e.printStackTrace();
 			}
 
+		}
+		
+		public void traverseFichierOrdreCroissant() {
+			Stagiaire stagiaire;
+			fichierTrieOrdreCroissant.delete();
+			try {
+				fichierTrieOrdreCroissant.createNewFile();
+				FileWriter out = new FileWriter(fichierTrieOrdreCroissant, true);
+				BufferedWriter bw = new BufferedWriter(out);
+				stagiaire = lecturePremierStagiaireFichierCible();
+				recursiveLectureTraverseFichierOrdreCroissant(stagiaire, bw);
+				bw.close();
+				out.close();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    
+		}
+
+		private void recursiveLectureTraverseFichierOrdreCroissant(Stagiaire stagiaire, BufferedWriter bw) throws IOException {
+			if (stagiaire != null) {
+		    	if (stagiaire.getRefGauche() != -1) {
+		    		stagiaire.setStagiaireGauche(lectureStagiaire(stagiaire.getRefGauche()));
+				}
+		    	if (stagiaire.getRefDroite() != -1) {
+		    		stagiaire.setStagiaireDroite(lectureStagiaire(stagiaire.getRefDroite()));
+				}
+		    	recursiveLectureTraverseFichierOrdreCroissant(stagiaire.getStagiaireGauche(), bw);
+		    	String stagiaireOrdreCroissant = stagiaire.getNom() + "\t" + stagiaire.getPrenom() + "\t" + stagiaire.getDep() 
+		        + "\t" + stagiaire.getFormation() + "\t" + stagiaire.getAnnee();
+		    	bw.write(stagiaireOrdreCroissant);
+		    	bw.newLine();
+		        System.out.println(stagiaire.getNom() + "\t" + stagiaire.getPrenom() + "\t" + stagiaire.getDep() 
+		        + "\t" + stagiaire.getFormation() + "\t" + stagiaire.getAnnee());
+		        recursiveLectureTraverseFichierOrdreCroissant(stagiaire.getStagiaireDroite(), bw);
+		    }
 		}
 }
