@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class GestionnaireFichier implements Parametre{
 	private Stagiaire root;
@@ -185,14 +186,14 @@ public class GestionnaireFichier implements Parametre{
 		}
 	}
 
-	public ArrayList<Stagiaire> traverseFichierRechercheNom(String nom, String elementRecherche) {
+	public ArrayList<Stagiaire> traverseFichierRechercheAvancee(String nom, String prenom, String dep, String formation, String annee) {
 		Stagiaire stagiaire;
 		ArrayList<Stagiaire> stagiaires = new ArrayList<Stagiaire>();
 		try {
 			// enregistrement du premier stagiaire lu dans le stagiaire
 			stagiaire = lirePremierStagiaireFichierCible();
 			// recherche recursive
-			recursiveLectureTraverseFichierRechercheChamps(stagiaire, nom, stagiaires, elementRecherche);
+			recursiveLectureTraverseFichierRechercheChamps(stagiaire, nom, stagiaires, prenom, dep, formation, annee);
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -204,8 +205,8 @@ public class GestionnaireFichier implements Parametre{
 		return stagiaires;
 	}
 
-	private void recursiveLectureTraverseFichierRechercheChamps(Stagiaire stagiaire, String champ, ArrayList<Stagiaire> stagiaires,
-			String critere) throws IOException {
+	private void recursiveLectureTraverseFichierRechercheChamps(Stagiaire stagiaire, String nom, ArrayList<Stagiaire> stagiaires,
+			String prenom, String dep, String formation, String annee) throws IOException {
 		if (stagiaire != null) {
 			if (stagiaire.getRefGauche() != -1) {
 				stagiaire.setStagiaireGauche(mc.lireStagiaire(stagiaire.getRefGauche()));
@@ -214,46 +215,47 @@ public class GestionnaireFichier implements Parametre{
 				stagiaire.setStagiaireDroite(mc.lireStagiaire(stagiaire.getRefDroite()));
 			}
 			// appel recursivite gauche
-			recursiveLectureTraverseFichierRechercheChamps(stagiaire.getStagiaireGauche(), champ, stagiaires, critere);
-			int lengthChamp = champ.length();
-			switch (critere) {
-			case "nom":
-				if(stagiaire.getNom().length()>= lengthChamp) {
-					if(((String) stagiaire.getNom().toUpperCase().subSequence(0, lengthChamp)).contains(champ.toUpperCase())) {
-						ajoutStagiaireDansListRecherche(stagiaire, stagiaires);
-					}
-				}
-				break;
-			case "prenom":
-				if(stagiaire.getPrenom().length()>= lengthChamp) {
-					if(((String) stagiaire.getPrenom().toUpperCase().subSequence(0, lengthChamp)).contains(champ.toUpperCase())) {
-						ajoutStagiaireDansListRecherche(stagiaire, stagiaires);
-					}
-				}
-				break;
-			case "departement":
-				if(stagiaire.getDep().length()>= lengthChamp) {
-					if(((String) stagiaire.getDep().toUpperCase().subSequence(0, lengthChamp)).contains(champ.toUpperCase())) {
-						ajoutStagiaireDansListRecherche(stagiaire, stagiaires);
-					}
-				}
-				break;
-			case "formation":
-				if(stagiaire.getFormation().length()>= lengthChamp) {
-					if(((String) stagiaire.getFormation().toUpperCase().subSequence(0, lengthChamp)).contains(champ.toUpperCase())) {
-						ajoutStagiaireDansListRecherche(stagiaire, stagiaires);
-					}
-				}
-				break;
-			case "annee":
-				if((stagiaire.getAnnee() == Integer.parseInt(champ))) {
+			recursiveLectureTraverseFichierRechercheChamps(stagiaire.getStagiaireGauche(), nom, stagiaires, prenom, dep, formation, annee);
+			// creation des variables contenant les tailles des champs recherches
+			int lengthNom = nom.length(), lengthPrenom = prenom.length(), lengthDep = dep.length(), 
+					lengthFormation = formation.length(), lengthAnnee = annee.length();
+			// verification si les tailles des champs sont plus grand a tailles chaque info utilisateur
+			if(stagiaire.getNom().length() >= lengthNom && stagiaire.getPrenom().length() >= lengthPrenom && 
+					stagiaire.getDep().length() >= lengthDep && stagiaire.getFormation().length() >= lengthFormation) {
+				// verification si les champs recherches se trouve dans le stagiaire
+				if(nomStagiaireContientNomRecherche(stagiaire, nom, lengthNom) &&
+						prenomStagiaireContinentPrenomRecherche(stagiaire, prenom, lengthPrenom) &&
+						depStagiaireContientDepRecherche(stagiaire, dep, lengthDep) &&
+						formationStagiaireContienFormationRecherche(stagiaire, formation, lengthFormation) &&
+						anneeStagiaireContientAnneRecherche(stagiaire, annee, lengthAnnee)) {
+					// ajout du stagiaire conforme a la recherche
 					ajoutStagiaireDansListRecherche(stagiaire, stagiaires);
 				}
-				break;
 			}
-			// appel recursivite droite
-			recursiveLectureTraverseFichierRechercheChamps(stagiaire.getStagiaireDroite(), champ, stagiaires, critere);
+			// appel recursivite gauche
+			recursiveLectureTraverseFichierRechercheChamps(stagiaire.getStagiaireDroite(), nom, stagiaires, prenom, dep, formation, annee);
 		}
+	}
+
+	private boolean anneeStagiaireContientAnneRecherche(Stagiaire stagiaire, String annee, int lengthAnnee) {
+		return ((String) Integer.toString(stagiaire.getAnnee()).subSequence(0, lengthAnnee)).contains(annee);
+	}
+
+	private boolean formationStagiaireContienFormationRecherche(Stagiaire stagiaire, String formation,
+			int lengthFormation) {
+		return ((String) stagiaire.getFormation().toUpperCase().subSequence(0, lengthFormation)).contains(formation.toUpperCase());
+	}
+
+	private boolean depStagiaireContientDepRecherche(Stagiaire stagiaire, String dep, int lengthDep) {
+		return ((String) stagiaire.getDep().toUpperCase().subSequence(0, lengthDep)).contains(dep.toUpperCase());
+	}
+
+	private boolean prenomStagiaireContinentPrenomRecherche(Stagiaire stagiaire, String prenom, int lengthPrenom) {
+		return ((String) stagiaire.getPrenom().toUpperCase().subSequence(0, lengthPrenom)).contains(prenom.toUpperCase());
+	}
+
+	private boolean nomStagiaireContientNomRecherche(Stagiaire stagiaire, String nom, int lengthNom) {
+		return ((String) stagiaire.getNom().toUpperCase().subSequence(0, lengthNom)).contains(nom.toUpperCase());
 	}
 
 	private void ajoutStagiaireDansListRecherche(Stagiaire stagiaire, ArrayList<Stagiaire> stagiaires) {
@@ -318,7 +320,7 @@ public class GestionnaireFichier implements Parametre{
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
 
 	private Stagiaire trouverPlusGrandEnfantDansGauche(Stagiaire enfantRemplacant) {
@@ -397,12 +399,12 @@ public class GestionnaireFichier implements Parametre{
 			}
 		}
 	}
-	
+
 
 	private boolean pasDEnfants(Stagiaire stagiaireASupprimer) {
 		return stagiaireASupprimer.getRefGauche() == -1 && stagiaireASupprimer.getRefDroite() == -1;
 	}
-	
+
 	public Stagiaire getRoot() {
 		return root;
 	}
