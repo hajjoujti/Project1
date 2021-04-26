@@ -1,5 +1,10 @@
 package fr.eql.ai109.projet1;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class TestMain implements Parametre {
 	private static GestionnaireFichier gf; 
 
@@ -84,26 +89,26 @@ public class TestMain implements Parametre {
 //		
 //		Parametre.lireStagiaire(nombreStagiaire);
 		
-//		long start = System.nanoTime();
-//		gf = new GestionnaireFichier();
-//		ArrayList<Stagiaire> stagiaires = gf.traverseFichierRechercheNom("le", "nom");
-//		try {
-//			FileWriter fw = new FileWriter("C:\\Users\\HAJJ\\Desktop\\extraitRecherche.txt", true);
-//			BufferedWriter bw = new BufferedWriter(fw);
-//			for (Stagiaire stagiaire : stagiaires) {
-//				System.out.println(stagiaire);
-//				bw.write(stagiaire.getNom());
-//				bw.newLine();
-//			}
-//			bw.close();
-//			fw.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		long duree = System.nanoTime() - start;
-//		double temps = duree / 1000000000.0;
-//		System.out.println(temps);
+		long start = System.nanoTime();
+		gf = new GestionnaireFichier();
+		ArrayList<Stagiaire> stagiaires = gf.rechercheAvancee("a", "", "", "", "2014");
+		try {
+			FileWriter fw = new FileWriter("C:\\Users\\HAJJ\\Desktop\\extraitRecherche.txt", true);
+			BufferedWriter bw = new BufferedWriter(fw);
+			for (Stagiaire stagiaire : stagiaires) {
+				System.out.println(stagiaire);
+				bw.write(stagiaire.getNom());
+				bw.newLine();
+			}
+			bw.close();
+			fw.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		long duree = System.nanoTime() - start;
+		double temps = duree / 1000000000.0;
+		System.out.println(temps);
 		
 //		for (Stagiaire stagiaire : stagiaires) {
 //			System.out.println(stagiaire);
