@@ -12,16 +12,17 @@ public class Stagiaire {
 	private Stagiaire stagiaireDroite; 
 	private Stagiaire stagiaireGauche; 
 	private long positionStagiaire;
-	
+	private long positionParent;
 	
 	public Stagiaire() {
 		super();
-		refGauche= 0; 
-		refDroite = 0; 
-		stagiaireDroite = null;
-		stagiaireGauche = null; 
+		this.refGauche = -1;	// cette valeur veut dire qu'il n'a pas d'enfant gauche
+		this.refDroite = -1;	// cette valeur veut dire qu'il n'a pas d'enfant droite
+		this.stagiaireGauche = null;
+		this.stagiaireDroite = null;
+		this.positionStagiaire = 0;
+		this.positionParent = -1;	// cette valeur veut dire qu'il n'a pas de parent et c'est la racine
 	}
-	
 	
 	public Stagiaire(String nom, String prenom, String dep, String formation, int annee) {
 		super();
@@ -30,20 +31,12 @@ public class Stagiaire {
 		this.dep = dep;
 		this.formation = formation;
 		this.annee = annee;
-		this.refGauche = 0;
-		this.refDroite = 0;
-		this.stagiaireDroite = null;
+		this.refGauche = -1;
+		this.refDroite = -1;
 		this.stagiaireGauche = null;
-	}
-
-
-	public long getPositionStagiaire() {
-		return positionStagiaire;
-	}
-
-
-	public void setPositionStagiaire(long positionStagiaire) {
-		this.positionStagiaire = positionStagiaire;
+		this.stagiaireDroite = null;
+		this.positionStagiaire = 0;
+		this.positionParent = -1;
 	}
 
 	@Override
@@ -51,99 +44,8 @@ public class Stagiaire {
 		return "Stagiaire [nom=" + nom + ", prenom=" + prenom + ", dep=" + dep + ", formation=" + formation + ", annee="
 				+ annee + ", refGauche=" + refGauche + ", refDroite=" + refDroite + ", stagiaireDroite="
 				+ stagiaireDroite + ", stagiaireGauche=" + stagiaireGauche + ", positionStagiaire=" + positionStagiaire
-				+ "]";
+				+ ", positionParent=" + positionParent + "]";
 	}
-
-
-	public String getNom() {
-		return nom;
-	}
-
-
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
-
-	public String getPrenom() {
-		return prenom;
-	}
-
-
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
-	}
-
-
-	public String getDep() {
-		return dep;
-	}
-
-
-	public void setDep(String dep) {
-		this.dep = dep;
-	}
-
-
-	public String getFormation() {
-		return formation;
-	}
-
-
-	public void setFormation(String formation) {
-		this.formation = formation;
-	}
-
-
-	public int getAnnee() {
-		return annee;
-	}
-
-
-	public void setAnnee(int annee) {
-		this.annee = annee;
-	}
-
-
-	public long getRefGauche() {
-		return refGauche;
-	}
-
-
-	public void setRefGauche(long refGauche) {
-		this.refGauche = refGauche;
-	}
-
-
-	public long getRefDroite() {
-		return refDroite;
-	}
-
-
-	public void setRefDroite(long refDroite) {
-		this.refDroite = refDroite;
-	}
-
-
-	public Stagiaire getStagiaireDroite() {
-		return stagiaireDroite;
-	}
-
-
-	public void setStagiaireDroite(Stagiaire stagiaireDroite) {
-		this.stagiaireDroite = stagiaireDroite;
-	}
-
-
-	public Stagiaire getStagiaireGauche() {
-		return stagiaireGauche;
-	}
-
-
-	public void setStagiaireGauche(Stagiaire stagiaireGauche) {
-		this.stagiaireGauche = stagiaireGauche;
-	}
-
 
 	@Override
 	public int hashCode() {
@@ -153,6 +55,7 @@ public class Stagiaire {
 		result = prime * result + ((dep == null) ? 0 : dep.hashCode());
 		result = prime * result + ((formation == null) ? 0 : formation.hashCode());
 		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
+		result = prime * result + (int) (positionParent ^ (positionParent >>> 32));
 		result = prime * result + (int) (positionStagiaire ^ (positionStagiaire >>> 32));
 		result = prime * result + ((prenom == null) ? 0 : prenom.hashCode());
 		result = prime * result + (int) (refDroite ^ (refDroite >>> 32));
@@ -161,7 +64,6 @@ public class Stagiaire {
 		result = prime * result + ((stagiaireGauche == null) ? 0 : stagiaireGauche.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -189,6 +91,8 @@ public class Stagiaire {
 				return false;
 		} else if (!nom.equals(other.nom))
 			return false;
+		if (positionParent != other.positionParent)
+			return false;
 		if (positionStagiaire != other.positionStagiaire)
 			return false;
 		if (prenom == null) {
@@ -213,7 +117,92 @@ public class Stagiaire {
 		return true;
 	}
 
-	
-	
+	public String getNom() {
+		return nom;
+	}
+
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+
+	public String getPrenom() {
+		return prenom;
+	}
+
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
+
+	public String getDep() {
+		return dep;
+	}
+
+	public void setDep(String dep) {
+		this.dep = dep;
+	}
+
+	public String getFormation() {
+		return formation;
+	}
+
+	public void setFormation(String formation) {
+		this.formation = formation;
+	}
+
+	public int getAnnee() {
+		return annee;
+	}
+
+	public void setAnnee(int annee) {
+		this.annee = annee;
+	}
+
+	public long getRefGauche() {
+		return refGauche;
+	}
+
+	public void setRefGauche(long refGauche) {
+		this.refGauche = refGauche;
+	}
+
+	public long getRefDroite() {
+		return refDroite;
+	}
+
+	public void setRefDroite(long refDroite) {
+		this.refDroite = refDroite;
+	}
+
+	public Stagiaire getStagiaireDroite() {
+		return stagiaireDroite;
+	}
+
+	public void setStagiaireDroite(Stagiaire stagiaireDroite) {
+		this.stagiaireDroite = stagiaireDroite;
+	}
+
+	public Stagiaire getStagiaireGauche() {
+		return stagiaireGauche;
+	}
+
+	public void setStagiaireGauche(Stagiaire stagiaireGauche) {
+		this.stagiaireGauche = stagiaireGauche;
+	}
+
+	public long getPositionStagiaire() {
+		return positionStagiaire;
+	}
+
+	public void setPositionStagiaire(long positionStagiaire) {
+		this.positionStagiaire = positionStagiaire;
+	}
+
+	public long getPositionParent() {
+		return positionParent;
+	}
+
+	public void setPositionParent(long positionParent) {
+		this.positionParent = positionParent;
+	}
 	
 }
