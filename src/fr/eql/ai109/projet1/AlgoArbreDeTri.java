@@ -2,6 +2,12 @@ package fr.eql.ai109.projet1;
 
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+
 
 public class AlgoArbreDeTri {
 	private Stagiaire root;
@@ -53,9 +59,9 @@ public class AlgoArbreDeTri {
 	}
 
 	private void comparaisonDep(Stagiaire current, String nom, String prenom, String dep, String formation, int annee) {
-		if(prenom.compareTo(current.getDep()) < 0) {
+		if(dep.compareTo(current.getDep()) < 0) {
 			current.setStagiaireGauche(ajoutRecursive(current.getStagiaireGauche(), nom, prenom, dep, formation, annee));
-		} else if(prenom.compareTo(current.getDep()) > 0) {
+		} else if(dep.compareTo(current.getDep()) > 0) {
 			current.setStagiaireDroite(ajoutRecursive(current.getStagiaireDroite(), nom, prenom, dep, formation, annee));
 		} else {
 			comparaisonFormation(current, nom, prenom, dep, formation, annee);
@@ -198,7 +204,44 @@ public class AlgoArbreDeTri {
 	public void setRoot(Stagiaire root) {
 		this.root = root;
 	}
+	
+	
+	
+	
+	//--------------------------------------------------------------------------------------------------------------------
+//	public List<Stagiaire> getAll(Stagiaire stagiaire, RandomAccessFile raf) throws Exception{
+//		List<Stagiaire> stagiairesList = new ArrayList<Stagiaire>();
+//		try {
+//			String cheminFichier = System.getProperty("user.dir") + "\\stagiaires.bin";
+//			raf = new RandomAccessFile(cheminFichier, "r");
+//			
+//			stagiairesList.add(stagiaire);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} finally {
+//			try {
+//				raf.close();
+//			} catch (IOException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
+//		return stagiairesList;
+//	}
+		
+	
+	
+	
+	
+	
+	
+	        
+			
+			
 
-}
+
+		
+	}
 
 

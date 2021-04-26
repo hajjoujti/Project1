@@ -18,12 +18,13 @@ public class FichierInitial {
 	static List<Stagiaire> stagiaires = new ArrayList<Stagiaire>();
 	static AlgoArbreDeTri arbre = new AlgoArbreDeTri();
 	static File f = new File(cheminFichierCible);
+	public static int nbStagiaire =0;
 
 	public static void main(String[] args) {	
 		lectureFichier();
 		for (Stagiaire stagiaire : stagiaires) {
 			arbre.ajout(stagiaire.getNom(), stagiaire.getPrenom(), stagiaire.getDep(), stagiaire.getFormation(), stagiaire.getAnnee());
-//			System.out.println(stagiaire.getDep());
+			//System.out.println(stagiaire.getDep());
 		}
 		arbre.ecrire(arbre.getRoot());
 		
@@ -87,6 +88,7 @@ public class FichierInitial {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
+		System.out.println(nbStagiaire);
 		
 	}
 
@@ -125,6 +127,18 @@ public class FichierInitial {
 		if (br.readLine().equals("*")){
 			Stagiaire stagiaire = new Stagiaire(nom, prenom, dep, formation, annee);
 			stagiaires.add(stagiaire);
+			nbStagiaire ++;
 		}
 	}
+	
+	public int getNbStagiaire() {
+		return nbStagiaire;
+	}
+
+
+
+	
+
+
+	
 }

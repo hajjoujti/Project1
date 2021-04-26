@@ -20,7 +20,7 @@ public class Stagiaire {
 		stagiaireDroite = null;
 		stagiaireGauche = null; 
 	}
-	
+
 	
 	public Stagiaire(String nom, String prenom, String dep, String formation, int annee) {
 		super();
@@ -36,6 +36,13 @@ public class Stagiaire {
 	}
 
 
+	public Stagiaire(String nom, String prenom, String dep, String formation) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+		this.dep = dep;
+		this.formation = formation;
+	}
 	@Override
 	public String toString() {
 		return "Stagiaire [nom=" + nom + ", prenom=" + prenom + ", dep=" + dep + ", formation=" + formation + ", annee="
