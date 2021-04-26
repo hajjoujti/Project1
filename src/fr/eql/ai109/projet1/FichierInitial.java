@@ -1,18 +1,11 @@
 package fr.eql.ai109.projet1;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FichierInitial implements Parametre {
-	
-	static RandomAccessFile raf = null; 
 	static FileReader fr = null; 
-	static BufferedReader br = null; 
 	static AlgoArbreDeTri arbre = new AlgoArbreDeTri();
 
 	public static void main(String[] args) {	
@@ -20,44 +13,40 @@ public class FichierInitial implements Parametre {
 	}
 
 	private static void lectureFichier() {
-		try {
-			fr = new FileReader (cheminFichier);
-			br = new BufferedReader (fr);
+		try (RandomAccessFile raf = new RandomAccessFile(cheminFichier, "r")) {
 			long positionStagiaire = 0;
 			arbre = new AlgoArbreDeTri();
-			while(br.ready()) {
-				Stagiaire stagiaire = creationStagiaire(positionStagiaire);
+			while(raf.getFilePointer() < fichierInitial.length()) {
+			
+				Stagiaire stagiaire = creationStagiaire(positionStagiaire, raf);
 				positionStagiaire += tailleStagiaire;
 				arbre.ajout(stagiaire);
 			}		
 		} catch (Exception e) {
 
 			e.printStackTrace();
-		} finally {
-			try {
-				fr.close();
-				br.close();
-			} catch (IOException e) {
-
-				e.printStackTrace();
-			}
-		}
+		} 
 	}
 
-	private static Stagiaire creationStagiaire(long positionStagiaire) throws IOException {
+	private static Stagiaire creationStagiaire(long positionStagiaire, RandomAccessFile raf) throws IOException {
 		String nom;
 		String prenom;
 		String dep;
 		String formation;
 		int annee;
-		nom = br.readLine();
-		prenom = br.readLine();
-		dep = br.readLine();
-		formation = br.readLine();
-		annee = Integer.parseInt(br.readLine());
+		nom = raf.readLine();
+
+		prenom = raf.readLine();
+
+		dep = raf.readLine();
+
+		formation = raf.readLine();
+
+		annee = Integer.parseInt(raf.readLine());
+
 		Stagiaire stagiaire = null ;
 
-		if (br.readLine().equals("*")){
+		if (raf.readLine().equals("*")){
 			stagiaire = new Stagiaire(nom, prenom, dep, formation, annee);
 			stagiaire.setPositionStagiaire(positionStagiaire);
 		}
