@@ -1,14 +1,5 @@
 package fr.eql.ai109.projet1;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 public class TestMain implements Parametre {
 	private static GestionnaireFichier gf; 
 
@@ -54,25 +45,48 @@ public class TestMain implements Parametre {
 		
 //		long start = System.nanoTime();
 		
-//		Stagiaire s13 = new Stagiaire("Ayoub", "Nicolass", "75", "AI 209", 2022);
+//		Stagiaire s13 = new Stagiaire("Ayoub", "Nicolas", "75", "AI 209", 2022);
 //		s13.setPositionStagiaire(fichierCible.length());
 //		gf = new GestionnaireFichier();
-//		gf.add(s13);
+//		gf.ajout(s13);
+		
+//		s13.setRefGauche(239330);
+//		s13.setRefDroite(-1);
+//		s13.setPositionStagiaire(239148);
+//		s13.setPositionParent(90636);
+//		gf.supprimeStagiaire(s13);
 		
 //		Stagiaire s14 = new Stagiaire("zrrsnab", "Nicolas", "asdas", "sdgfsd", 2010);
 //		s14.setPositionStagiaire(fichierCible.length());
 //		gf = new GestionnaireFichier();
-//		gf.add(s14);
+//		gf.ajout(s14);
+		
+//		Stagiaire supp = new Stagiaire("LEPANTE", "Willy", "95", "AI 78", 2010);
+//		supp.setRefGauche(182);
+//		supp.setRefDroite(546);
+//		supp.setPositionStagiaire(0);
+//		supp.setPositionParent(-1);
+//		gf = new GestionnaireFichier();
+//		gf.supprimeStagiaire(supp);
+		
+//		Stagiaire ajout = new Stagiaire("LEPANTE", "franc", "95", "AI 78", 2010);
+//		ajout.setPositionStagiaire(fichierCible.length());
+//		gf = new GestionnaireFichier();
+//		gf.ajout(ajout);
 		
 //		gf = new GestionnaireFichier();
 //		gf.traverseFichierOrdreCroissant();
+
 //		
 //		long duree = System.nanoTime() - start;
 //		double temps = duree / 1000000000.0;
 //		System.out.println(temps);
+//		
+//		Parametre.lireStagiaire(nombreStagiaire);
 		
+//		long start = System.nanoTime();
 //		gf = new GestionnaireFichier();
-//		ArrayList<Stagiaire> stagiaires = gf.traverseFichierRechercheNom("2015", "annee");
+//		ArrayList<Stagiaire> stagiaires = gf.traverseFichierRechercheNom("le", "nom");
 //		try {
 //			FileWriter fw = new FileWriter("C:\\Users\\HAJJ\\Desktop\\extraitRecherche.txt", true);
 //			BufferedWriter bw = new BufferedWriter(fw);
@@ -87,6 +101,10 @@ public class TestMain implements Parametre {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
+//		long duree = System.nanoTime() - start;
+//		double temps = duree / 1000000000.0;
+//		System.out.println(temps);
+		
 //		for (Stagiaire stagiaire : stagiaires) {
 //			System.out.println(stagiaire);
 //			conteur++;
@@ -114,6 +132,7 @@ public class TestMain implements Parametre {
 //			long refGauche;
 //			long refDroite;
 //			long refStagiaire;
+//			long refStagiaireParent;
 //
 //			Stagiaire stagiaireActuel;
 //			System.out.println(raf.getFilePointer());
@@ -146,10 +165,12 @@ public class TestMain implements Parametre {
 //				refGauche = raf.readLong();
 //				refDroite = raf.readLong();
 //				refStagiaire = raf.readLong();
+//				refStagiaireParent = raf.readLong();
 //				stagiaireActuel = new Stagiaire(nom, prenom, dep, formation, annee);
 //				stagiaireActuel.setRefGauche(refGauche);
 //				stagiaireActuel.setRefDroite(refDroite);
 //				stagiaireActuel.setPositionStagiaire(refStagiaire);
+//				stagiaireActuel.setPositionParent(refStagiaireParent);
 //				System.out.println(stagiaireActuel);
 //				System.out.println(raf.getFilePointer());
 //			}
