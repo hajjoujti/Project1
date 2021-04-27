@@ -11,6 +11,7 @@ public class Stagiaire {
 	private long refDroite;
 	private Stagiaire stagiaireDroite; 
 	private Stagiaire stagiaireGauche; 
+	private long positionStagiaire;
 	
 	
 	public Stagiaire() {
@@ -20,7 +21,7 @@ public class Stagiaire {
 		stagiaireDroite = null;
 		stagiaireGauche = null; 
 	}
-
+	
 	
 	public Stagiaire(String nom, String prenom, String dep, String formation, int annee) {
 		super();
@@ -29,25 +30,28 @@ public class Stagiaire {
 		this.dep = dep;
 		this.formation = formation;
 		this.annee = annee;
-		refGauche= 0; 
-		refDroite = 0; 
-		stagiaireDroite = null;
-		stagiaireGauche = null; 
+		this.refGauche = 0;
+		this.refDroite = 0;
+		this.stagiaireDroite = null;
+		this.stagiaireGauche = null;
 	}
 
 
-	public Stagiaire(String nom, String prenom, String dep, String formation) {
-		super();
-		this.nom = nom;
-		this.prenom = prenom;
-		this.dep = dep;
-		this.formation = formation;
+	public long getPositionStagiaire() {
+		return positionStagiaire;
 	}
+
+
+	public void setPositionStagiaire(long positionStagiaire) {
+		this.positionStagiaire = positionStagiaire;
+	}
+
 	@Override
 	public String toString() {
 		return "Stagiaire [nom=" + nom + ", prenom=" + prenom + ", dep=" + dep + ", formation=" + formation + ", annee="
 				+ annee + ", refGauche=" + refGauche + ", refDroite=" + refDroite + ", stagiaireDroite="
-				+ stagiaireDroite + ", stagiaireGauche=" + stagiaireGauche + "]";
+				+ stagiaireDroite + ", stagiaireGauche=" + stagiaireGauche + ", positionStagiaire=" + positionStagiaire
+				+ "]";
 	}
 
 
@@ -149,6 +153,7 @@ public class Stagiaire {
 		result = prime * result + ((dep == null) ? 0 : dep.hashCode());
 		result = prime * result + ((formation == null) ? 0 : formation.hashCode());
 		result = prime * result + ((nom == null) ? 0 : nom.hashCode());
+		result = prime * result + (int) (positionStagiaire ^ (positionStagiaire >>> 32));
 		result = prime * result + ((prenom == null) ? 0 : prenom.hashCode());
 		result = prime * result + (int) (refDroite ^ (refDroite >>> 32));
 		result = prime * result + (int) (refGauche ^ (refGauche >>> 32));
@@ -184,6 +189,8 @@ public class Stagiaire {
 				return false;
 		} else if (!nom.equals(other.nom))
 			return false;
+		if (positionStagiaire != other.positionStagiaire)
+			return false;
 		if (prenom == null) {
 			if (other.prenom != null)
 				return false;
@@ -210,3 +217,4 @@ public class Stagiaire {
 	
 	
 }
+
