@@ -3,6 +3,7 @@ package fr.eql.ai109.projet1;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.charset.StandardCharsets;
 
 public class FichierInitial implements Parametre {
 	static FileReader fr = null; 
@@ -35,19 +36,23 @@ public class FichierInitial implements Parametre {
 		String formation;
 		int annee;
 		nom = raf.readLine();
+		String nomANSI = new String(nom.getBytes("CP1252"), StandardCharsets.UTF_8);
 
 		prenom = raf.readLine();
+		String prenomANSI = new String(prenom.getBytes("CP1252"), StandardCharsets.UTF_8);
 
 		dep = raf.readLine();
+		String depANSI = new String(dep.getBytes("CP1252"), StandardCharsets.UTF_8);
 
 		formation = raf.readLine();
+		String formationANSI = new String(formation.getBytes("CP1252"), StandardCharsets.UTF_8);
 
 		annee = Integer.parseInt(raf.readLine());
 
 		Stagiaire stagiaire = null ;
 
 		if (raf.readLine().equals("*")){
-			stagiaire = new Stagiaire(nom, prenom, dep, formation, annee);
+			stagiaire = new Stagiaire(nomANSI, prenomANSI, depANSI, formationANSI, annee);
 			stagiaire.setPositionStagiaire(positionStagiaire);
 		}
 		return stagiaire;
