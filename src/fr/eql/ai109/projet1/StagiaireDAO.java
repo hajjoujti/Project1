@@ -44,7 +44,13 @@ public class StagiaireDAO implements Parametre {
 			// recursivite gauche
 			recursiveLectureTraverseFichierOrdreCroissant(stagiaire.getStagiaireGauche());
 			// ajout du stagiaire dans la liste
-			stagiairesList.add(stagiaire);
+			Stagiaire stagiaireAlternatif = new Stagiaire(stagiaire.getNom(), stagiaire.getPrenom(), stagiaire.getDep(),
+					stagiaire.getFormation(), stagiaire.getAnnee());
+			stagiaireAlternatif.setRefGauche(stagiaire.getRefGauche());
+			stagiaireAlternatif.setRefDroite(stagiaire.getRefDroite());
+			stagiaireAlternatif.setPositionStagiaire(stagiaire.getPositionStagiaire());
+			stagiaireAlternatif.setPositionParent(stagiaire.getPositionParent());
+			stagiairesList.add(stagiaireAlternatif);
 			// recursivite droite
 			recursiveLectureTraverseFichierOrdreCroissant(stagiaire.getStagiaireDroite());
 		}
@@ -80,6 +86,7 @@ public class StagiaireDAO implements Parametre {
 	public void ajoutNouveauStagiaire(Stagiaire nouveauStagiaire) {
 		gf = new GestionnaireFichier();
 		nouveauStagiaire.setPositionStagiaire(fichierCible.length());
+		System.out.println(nouveauStagiaire);
 		gf.ajout(nouveauStagiaire);
 		this.stagiairesList.add(nouveauStagiaire);
 	}

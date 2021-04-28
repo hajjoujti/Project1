@@ -7,6 +7,11 @@ public interface Parametre {
 	final String cheminFichierCible = System.getProperty("user.dir") + "\\stagiaires.bin";
 	final String cheminFichierTrieOrdreCroissant = System.getProperty("user.dir") + "\\stagiairesEnOrdre.txt";
 	final String cheminFichierDoc = System.getProperty("user.dir") + "\\README.txt";
+	final String chemingLogoEQL = System.getProperty("user.dir") + "\\icons\\eql-logo.png";
+	final String cheminExportPdf = System.getProperty("user.dir") + "\\";
+	final String cheminIconAjout = "file:\\" + System.getProperty("user.dir") + "\\icons\\add.png";
+	final String cheminIconSupp = "file:\\" + System.getProperty("user.dir") + "\\icons\\delete.png";
+	final String cheminIconModif = "file:\\" + System.getProperty("user.dir") + "\\icons\\edit.png";
 	final File fichierInitial = new File(cheminFichier);
 	final File fichierCible = new File(cheminFichierCible);
 	final File fichierTrieOrdreCroissant = new File(cheminFichierTrieOrdreCroissant);
