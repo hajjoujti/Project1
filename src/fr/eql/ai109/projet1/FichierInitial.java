@@ -1,5 +1,6 @@
 package fr.eql.ai109.projet1;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -10,14 +11,14 @@ public class FichierInitial implements Parametre {
 	static AlgoArbreDeTri arbre = new AlgoArbreDeTri();
 
 	public static void main(String[] args) {	
-		lectureFichier();	
+		lectureFichier(fichierInitial);	
 	}
 
-	private static void lectureFichier() {
-		try (RandomAccessFile raf = new RandomAccessFile(cheminFichier, "r")) {
+	public static void lectureFichier(File fichier) {
+		try (RandomAccessFile raf = new RandomAccessFile(fichier, "r")) {
 			long positionStagiaire = 0;
 			arbre = new AlgoArbreDeTri();
-			while(raf.getFilePointer() < fichierInitial.length()) {
+			while(raf.getFilePointer() < fichier.length()) {
 			
 				Stagiaire stagiaire = creationStagiaire(positionStagiaire, raf);
 				positionStagiaire += tailleStagiaire;
