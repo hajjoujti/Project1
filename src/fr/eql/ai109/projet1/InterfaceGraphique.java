@@ -37,7 +37,9 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -557,7 +559,104 @@ public class InterfaceGraphique extends Application implements Parametre {
 		};
 		colAction.setCellFactory(cellFactory);
 		//Donner la colonne à notre tableview
-		tableView.getColumns().addAll(colNom, colPrenom, colDep, colFormation, colAnnee, colAction); 
+		tableView.getColumns().addAll(colNom, colPrenom, colDep, colFormation, colAnnee, colAction);
+		
+		tableView.setEditable(true);
+
+		colNom.setCellFactory(TextFieldTableCell.forTableColumn());
+		colNom.setOnEditCommit(
+				new EventHandler<CellEditEvent<Stagiaire, String>>() {
+					public void handle(CellEditEvent<Stagiaire, String> t) {
+						Stagiaire stagiaireAModifier = (Stagiaire) t.getTableView().getItems().get(
+								t.getTablePosition().getRow());
+						System.out.println(stagiaireAModifier);
+						Stagiaire stagiaireRemplacant = (Stagiaire) t.getTableView().getItems().get(
+								t.getTablePosition().getRow());
+						stagiaireRemplacant.setNom(t.getNewValue());
+						dao.modifierStagiaire(stagiaireAModifier, stagiaireRemplacant);
+						observableStagiaire.setAll(dao.getAll());
+
+					}
+				}
+				);
+
+		colPrenom.setCellFactory(TextFieldTableCell.forTableColumn());
+		colPrenom.setOnEditCommit(
+				new EventHandler<CellEditEvent<Stagiaire, String>>() {
+					public void handle(CellEditEvent<Stagiaire, String> t) {
+						Stagiaire stagiaireAModifier = (Stagiaire) t.getTableView().getItems().get(
+								t.getTablePosition().getRow());
+						System.out.println(stagiaireAModifier);
+						Stagiaire stagiaireRemplacant = (Stagiaire) t.getTableView().getItems().get(
+								t.getTablePosition().getRow());
+						stagiaireRemplacant.setPrenom(t.getNewValue());
+						dao.modifierStagiaire(stagiaireAModifier, stagiaireRemplacant);
+						observableStagiaire.setAll(dao.getAll());
+
+					}
+				}
+				);
+
+		colDep.setCellFactory(TextFieldTableCell.forTableColumn());
+		colDep.setOnEditCommit(
+				new EventHandler<CellEditEvent<Stagiaire, String>>() {
+					public void handle(CellEditEvent<Stagiaire, String> t) {
+						Stagiaire stagiaireAModifier = (Stagiaire) t.getTableView().getItems().get(
+								t.getTablePosition().getRow());
+						System.out.println(stagiaireAModifier);
+						Stagiaire stagiaireRemplacant = (Stagiaire) t.getTableView().getItems().get(
+								t.getTablePosition().getRow());
+						stagiaireRemplacant.setDep(t.getNewValue());
+						dao.modifierStagiaire(stagiaireAModifier, stagiaireRemplacant);
+						observableStagiaire.setAll(dao.getAll());
+
+					}
+				}
+				);
+
+		colFormation.setCellFactory(TextFieldTableCell.forTableColumn());
+		colFormation.setOnEditCommit(
+				new EventHandler<CellEditEvent<Stagiaire, String>>() {
+					public void handle(CellEditEvent<Stagiaire, String> t) {
+						Stagiaire stagiaireAModifier = (Stagiaire) t.getTableView().getItems().get(
+								t.getTablePosition().getRow());
+						System.out.println(stagiaireAModifier);
+						Stagiaire stagiaireRemplacant = (Stagiaire) t.getTableView().getItems().get(
+								t.getTablePosition().getRow());
+						stagiaireRemplacant.setFormation(t.getNewValue());
+						dao.modifierStagiaire(stagiaireAModifier, stagiaireRemplacant);
+						observableStagiaire.setAll(dao.getAll());
+
+					}
+				}
+				);
+
+				colAnnee.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverterCustomized()));
+				colAnnee.setOnEditCommit(
+						new EventHandler<CellEditEvent<Stagiaire, Integer>>() {
+							public void handle(CellEditEvent<Stagiaire, Integer> t) {
+								if(t.getNewValue() == null) {
+									message.setText(messageErreurFormatNumbero);
+									observableStagiaire.setAll(dao.getAll());
+								} else if(t.getNewValue().toString().length() > 4) {
+									message.setText(messageErreurAnneQuatreChiffre);
+									observableStagiaire.setAll(dao.getAll());
+								} else {
+									Stagiaire stagiaireAModifier = (Stagiaire) t.getTableView().getItems().get(
+											t.getTablePosition().getRow());
+									System.out.println(stagiaireAModifier);
+									Stagiaire stagiaireRemplacant = (Stagiaire) t.getTableView().getItems().get(
+											t.getTablePosition().getRow());
+									stagiaireRemplacant.setAnnee(t.getNewValue());
+									System.out.println(stagiaireRemplacant);
+									dao.modifierStagiaire(stagiaireAModifier, stagiaireRemplacant);
+									observableStagiaire.setAll(dao.getAll());
+									message.setText("Stagiaire modifié.");
+								}
+							}
+						}
+						);
+		
 		//Ajuster la taille du tableau à son contenu
 		tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tableView.setPrefSize(850, 575);
