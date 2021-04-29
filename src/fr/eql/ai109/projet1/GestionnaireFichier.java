@@ -289,28 +289,47 @@ public class GestionnaireFichier implements Parametre{
 			// verification si le remplacant a un enfant gauche
 			if(stagiaireRemplacant.getRefGauche() != -1) {
 				enfantGaucheDuStagiaireRemplacant = mc.lireStagiaire(stagiaireRemplacant.getRefGauche());
+				System.out.println("stagiaiare enfant remplacant " + enfantGaucheDuStagiaireRemplacant);
 			}
 			// definir le parent du stagiaire remplacant
 			parentDuStagiaireRemplacant = mc.lireStagiaire(stagiaireRemplacant.getPositionParent());
+			System.out.println("stagiaire parent remplacant " + parentDuStagiaireRemplacant);
 			// mettre les references du stagiaire a supprime dans le stagiaire rempalacant
-			stagiaireRemplacant.setRefGauche(stagiaireASupprimer.getRefGauche());
+			System.out.println("remplacant avant: " + stagiaireRemplacant);
+//			stagiaireRemplacant.setRefGauche(stagiaireASupprimer.getRefGauche());
 			stagiaireRemplacant.setRefDroite(stagiaireASupprimer.getRefDroite());
 			stagiaireRemplacant.setPositionStagiaire(stagiaireASupprimer.getPositionStagiaire());
 			stagiaireRemplacant.setPositionParent(stagiaireASupprimer.getPositionParent());
+			System.out.println("remplacant: " + stagiaireRemplacant);
 			try(RandomAccessFile raf = new RandomAccessFile(cheminFichierCible, "rw")) {
 				// ecraser le stagiaire a supprime par le stagiaire remplacant
-				raf.seek(stagiaireASupprimer.getPositionStagiaire());
-				mc.ecrireStagiaire(stagiaireRemplacant, raf);
-				raf.seek(parentDuStagiaireRemplacant.getPositionStagiaire() + (tailleChampMax * nombreChamp) + tailleLong);
+				
+				
 				if (enfantGaucheDuStagiaireRemplacant != null) {
+					raf.seek(stagiaireASupprimer.getPositionStagiaire());
+					mc.ecrireStagiaire(stagiaireRemplacant, raf);
+					if(parentDuStagiaireRemplacant.getPositionStagiaire() != stagiaireASupprimer.getPositionStagiaire()) {
+					parentDuStagiaireRemplacant.setRefGauche(enfantGaucheDuStagiaireRemplacant.getPositionStagiaire());
+					System.out.println("parent ramplaca apres " + parentDuStagiaireRemplacant);
+					raf.seek(parentDuStagiaireRemplacant.getPositionStagiaire());
+					mc.ecrireStagiaire(parentDuStagiaireRemplacant, raf);
+					}
 					// chamgement de la reference parent du l'enfant du stagiaie remplacant
-					raf.writeLong(enfantGaucheDuStagiaireRemplacant.getPositionStagiaire());
+//					raf.writeLong(enfantGaucheDuStagiaireRemplacant.getPositionStagiaire());
 					// changemetn de la reference enfant droite du parent du stagiaire remplacant
-					raf.seek(enfantGaucheDuStagiaireRemplacant.getPositionStagiaire() + tailleStagiaire - tailleLong);
-					raf.writeLong(parentDuStagiaireRemplacant.getPositionStagiaire());
+					enfantGaucheDuStagiaireRemplacant.setPositionParent(parentDuStagiaireRemplacant.getPositionStagiaire());
+					System.out.println("enfant remplacant apres " +enfantGaucheDuStagiaireRemplacant);
+					raf.seek(enfantGaucheDuStagiaireRemplacant.getPositionStagiaire());
+					mc.ecrireStagiaire(enfantGaucheDuStagiaireRemplacant, raf);
+//					raf.writeLong(parentDuStagiaireRemplacant.getPositionStagiaire());
 				} else {
+					stagiaireRemplacant.setRefGauche(stagiaireASupprimer.getRefGauche());
+					raf.seek(stagiaireASupprimer.getPositionStagiaire());
+					mc.ecrireStagiaire(stagiaireRemplacant, raf);
+					parentDuStagiaireRemplacant.setRefDroite(-1);
+					raf.seek(parentDuStagiaireRemplacant.getPositionStagiaire());
 					// si le stagiare ramplacant n'a pas d'enfant gauche on remplace la reference droite de son parent par -1
-					raf.writeLong(-1);
+					mc.ecrireStagiaire(parentDuStagiaireRemplacant, raf);
 				}
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
