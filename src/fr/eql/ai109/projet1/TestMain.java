@@ -79,8 +79,8 @@ public class TestMain implements Parametre {
 //		gf = new GestionnaireFichier();
 //		gf.ajout(ajout);
 		
-//		gf = new GestionnaireFichier();
-//		gf.traverseFichierOrdreCroissant();
+		gf = new GestionnaireFichier();
+		gf.traverseFichierOrdreCroissant();
 
 //		
 //		long duree = System.nanoTime() - start;
