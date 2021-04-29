@@ -58,6 +58,8 @@ public class InterfaceGraphique extends Application implements Parametre {
 	StagiaireDAO dao = new StagiaireDAO();
 	Desktop desktop;
 	private TextField affichage = new TextField("");
+	Label message = new Label();
+	private boolean activeMessage = false;
 
 
 	@SuppressWarnings("unchecked")
@@ -117,7 +119,7 @@ public class InterfaceGraphique extends Application implements Parametre {
 		paneTableView.setAlignment(Pos.CENTER);
 
 		root.setCenter(paneTableView);
-//		BorderPane.setAlignment(paneTableView, Pos.CENTER_LEFT);
+		//		BorderPane.setAlignment(paneTableView, Pos.CENTER_LEFT);
 
 
 		//-----------------------------------------------------------------------------------------------------------
@@ -161,10 +163,11 @@ public class InterfaceGraphique extends Application implements Parametre {
 		box.setSpacing(60);
 		box.setAlignment(Pos.CENTER);
 
-		Label lbl2 = new Label("Session Invité");
+		Label lbl2 = new Label("Session utilisateurs");
 		lbl2.setUnderline(true);
-		
-		lbl2.setPadding(new Insets(0, 180, 0, 220)); 
+		lbl2.setTextFill(Color.web("#00122E"));
+
+		lbl2.setPadding(new Insets(30, 140, 0, 220)); 
 		box.getChildren().add(lbl2);
 		Font f6 = Font.font(STYLESHEET_CASPIAN, FontWeight.EXTRA_LIGHT, FontPosture.ITALIC, 30);
 		lbl2.setFont(f6);
@@ -228,11 +231,15 @@ public class InterfaceGraphique extends Application implements Parametre {
 
 		//GridPane3
 		Button btnRecherche = new Button("Rechercher");
-		HBox hbox= new HBox(10);
+		HBox hbox= new HBox(20);
 		Button btnReini = new Button("Réinitialiser");
+		hbox.setAlignment(Pos.CENTER);
+		hbox.setPadding(new Insets(0,20,0,0));
 		hbox.getChildren().addAll(btnRecherche, btnReini);
+
+
+
 		
-		Label message = new Label();
 		message.setTextFill(Color.web("#FF0000"));
 		Image image = new Image(new FileInputStream(chemingLogoEQL));  
 		//Setting the image view 
@@ -254,10 +261,11 @@ public class InterfaceGraphique extends Application implements Parametre {
 		grille2.addRow(5, message);
 		grille2.addRow(6, group);
 
+
 		grille2.setHgap(0);
 		grille2.setVgap(30);
 		root.setRight(grille2);
-		grille2.setPadding(new Insets(0, 100, 50, 100));	
+		grille2.setPadding(new Insets(30, 100, 50, 100));	
 		BorderPane.setAlignment(grille2, Pos.CENTER);
 
 		btnRecherche.setOnAction((ActionEvent e)
@@ -274,9 +282,10 @@ public class InterfaceGraphique extends Application implements Parametre {
 					}
 				}
 				);
-		
+
 		btnReini.setOnAction((ActionEvent e)
 				-> {  
+					message.setText("");
 					tfNom.clear();
 					tfPrenom.clear();
 					tfDep.clear();
@@ -311,7 +320,7 @@ public class InterfaceGraphique extends Application implements Parametre {
 				Label lblMdp = new Label("Mdp: ");
 				PasswordField tfMdp = new PasswordField();
 				Button valider = new Button ("Valider");
-				
+
 				Label lbl1 = new Label();
 				lbl1.setWrapText(true);
 				lbl1.setMaxWidth(325);
@@ -327,22 +336,22 @@ public class InterfaceGraphique extends Application implements Parametre {
 				grille4.setHgap(20);
 				grille4.setVgap(10);
 				grille4.setPadding(new Insets(10));
-				
+
 
 				GridPane grille5 = new GridPane();
-				
+
 				grille5.add(grille4, 0, 0);
 				grille5.add(lbl1, 0 , 1);
 				grille5.add(valider, 0, 2);
 				grille5.setVgap(10);
-				
+
 				GridPane.setHalignment(valider, HPos.CENTER);
 				GridPane.setHalignment(lbl1, HPos.CENTER);
 				AnchorPane.setTopAnchor(grille5, 10.);
 				AnchorPane.setBottomAnchor(grille5, 10.);
 				AnchorPane.setLeftAnchor(grille5, 10.);
 				AnchorPane.setRightAnchor(grille5, 10.);
-				
+
 				anchorPane2.getChildren().addAll(grille5);
 
 				Scene scene2 = new Scene(anchorPane2, 325, 200);
@@ -461,7 +470,7 @@ public class InterfaceGraphique extends Application implements Parametre {
 		paneTableView.setAlignment(Pos.CENTER);
 
 		root.setCenter(paneTableView);
-		
+
 		//-----------------------------------------------------------------------------------------------------------
 		//																	HBOX --> bouton delete 
 		//----------------------------------------------------------------------------------------------------------
@@ -504,10 +513,12 @@ public class InterfaceGraphique extends Application implements Parametre {
 
 		Label lbl2 = new Label("Session Administrateur");
 		lbl2.setUnderline(true);
+		box.getChildren().add(lbl2); 
 
-		box.getChildren().add(lbl2);
-		lbl2.setPadding(new Insets(0, 180, 0, 200)); 
-		Font f6 = Font.font(STYLESHEET_CASPIAN, FontWeight.EXTRA_LIGHT, FontPosture.ITALIC, 30);
+		lbl2.setPadding(new Insets(30, 120, 0, 200));
+
+		lbl2.setTextFill(Color.web("#00122E"));
+		Font f6 = Font.font(STYLESHEET_CASPIAN, FontWeight.EXTRA_LIGHT, FontPosture.ITALIC, 28);
 		lbl2.setFont(f6);
 
 
@@ -580,7 +591,8 @@ public class InterfaceGraphique extends Application implements Parametre {
 		Button btnReini = new Button("Réinitialiser");
 
 		hbox.getChildren().addAll(btnRecherche, btnReini);
-		Label message = new Label();
+		hbox.setAlignment(Pos.CENTER);
+		hbox.setPadding(new Insets(0,20,0,0));
 		message.setTextFill(Color.web("#FF0000"));
 
 		Image image2;
@@ -612,7 +624,7 @@ public class InterfaceGraphique extends Application implements Parametre {
 		grille2.setHgap(0);
 		grille2.setVgap(30);
 		root.setRight(grille2);
-		grille2.setPadding(new Insets(0, 100, 50, 100));
+		grille2.setPadding(new Insets(30, 100, 50, 100));
 		BorderPane.setAlignment(grille2, Pos.CENTER);
 
 
@@ -647,12 +659,14 @@ public class InterfaceGraphique extends Application implements Parametre {
 
 		btnReini.setOnAction((ActionEvent e)
 				-> {  
+					message.setText("");
 					tfNom.clear();
 					tfPrenom.clear();
 					tfDep.clear();
 					tfFormation.clear();
 					tfAnnee.clear();
 					observableStagiaire.setAll(dao.getAll());
+					activeMessage = false;
 				}   
 				);
 
@@ -673,11 +687,13 @@ public class InterfaceGraphique extends Application implements Parametre {
 			}
 		});
 	}
-	
+
 	private void sceneBoutonAjout(ObservableList<Stagiaire> observableStagiaire, Button btnAjout, TextField tfNom,
 			TextField tfPrenom, TextField tfDep, TextField tfFormation, TextField tfAnnee, Label message) {
 		btnAjout.setOnAction((ActionEvent e)
-				-> { 
+				-> {
+					
+
 					Stage primaryStage4 = new Stage();
 					AnchorPane anchorPane4 = new AnchorPane(); 
 					anchorPane4.setStyle("-fx-background-color: LIGHTGRAY;");
@@ -731,6 +747,12 @@ public class InterfaceGraphique extends Application implements Parametre {
 					GridPane.setHalignment(ajouter, HPos.CENTER);
 					GridPane.setHalignment(messageAjout, HPos.CENTER);
 
+					tfNomAjout.setPromptText("Nom");
+					tfPrenomAjout.setPromptText("Prenom");
+					tfDepAjout.setPromptText("Département");
+					tfFormationAjout.setPromptText("Formation");
+					tfAnneeAjout.setPromptText("Année");
+
 					anchorPane4.getChildren().addAll(grilleMere);
 					AnchorPane.setTopAnchor(grilleMere, 10.);
 					AnchorPane.setBottomAnchor(grilleMere, 10.);
@@ -760,10 +782,16 @@ public class InterfaceGraphique extends Application implements Parametre {
 									tfFormationAjout.clear();
 									tfAnneeAjout.clear();
 									primaryStage4.close();
+									activeMessage = true;
+									if(activeMessage){
+										message.setText("Stagiaire créé.");	
+									}
 								}
 							}
 						}
 					});
+					
+				
 				}  
 				);
 	}
@@ -803,6 +831,10 @@ public class InterfaceGraphique extends Application implements Parametre {
 						Stagiaire stagiaireASupprimer = getTableView().getItems().get(getIndex());
 						dao.supprimerStagiaire(stagiaireASupprimer);
 						observableStagiaire.setAll(dao.getAll());
+						activeMessage = true;
+						if(activeMessage){
+							message.setText("Stagiaire supprimé.");	
+						}
 					});
 					modif.setGraphic(new ImageView(new Image(cheminIconModif)));
 					modif.setOnAction((ActionEvent event) -> {
@@ -837,10 +869,10 @@ public class InterfaceGraphique extends Application implements Parametre {
 
 						Button modifier = new Button ("Modifier");
 
-						Label message = new Label();
-						message.setTextFill(Color.web("#FF0000"));
-						message.setWrapText(true);
-						message.setMaxWidth(350);
+						Label messageModifier = new Label();
+						messageModifier.setTextFill(Color.web("#FF0000"));
+						messageModifier.setWrapText(true);
+						messageModifier.setMaxWidth(350);
 
 						grille.add(lblNom, 0, 0);
 						grille.add(tfNom, 1, 0);
@@ -854,12 +886,12 @@ public class InterfaceGraphique extends Application implements Parametre {
 						grille.add(tfAnnee, 1, 4);
 						grilleMere.add(grille, 0, 0);
 						grilleMere.add(modifier, 0, 3);
-						grilleMere.add(message, 0, 1);
+						grilleMere.add(messageModifier, 0, 1);
 
 						grille.setVgap(20);
 						grilleMere.setVgap(20);
 						GridPane.setHalignment(modifier, HPos.CENTER);
-						GridPane.setHalignment(message, HPos.CENTER);
+						GridPane.setHalignment(messageModifier, HPos.CENTER);
 
 						tfNom.setPromptText("Nom");
 						tfNom.setMaxWidth(colNom.getPrefWidth());
@@ -894,9 +926,9 @@ public class InterfaceGraphique extends Application implements Parametre {
 
 							@Override
 							public void handle(ActionEvent event) {
-								if(verifierAnneeEstNombreAQuatreChiffre(tfAnnee, message)) {
+								if(verifierAnneeEstNombreAQuatreChiffre(tfAnnee, messageModifier)) {
 									if(verifierTailleChamps(tfNom.getText(), tfPrenom.getText(), tfDep.getText(), 
-											tfFormation.getText(), message)) {
+											tfFormation.getText(), messageModifier)) {
 										Stagiaire stagiaireRemplacant = new Stagiaire(tfNom.getText(), tfPrenom.getText(), 
 												tfDep.getText(), 
 												tfFormation.getText(), Integer.parseInt(tfAnnee.getText()));
@@ -908,6 +940,10 @@ public class InterfaceGraphique extends Application implements Parametre {
 										tfFormation.clear();
 										tfAnnee.clear();
 										primaryStage3.close();
+										activeMessage = true;
+										if(activeMessage) {
+											message.setText("Stagiaire modifié.");
+										}
 									}
 								}
 							}
