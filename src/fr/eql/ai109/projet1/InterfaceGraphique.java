@@ -113,6 +113,11 @@ public class InterfaceGraphique extends Application implements Parametre {
 		tableView.setStyle("-fx-background-color: black;");
 
 		GridPane paneTableView = new GridPane();
+		
+		Button btnAjout = new Button("");
+		btnAjout.setGraphic(new ImageView(new Image(cheminIconAjout)));
+		paneTableView.add(btnAjout, 0, 0);
+		
 		paneTableView.add(tableView, 0, 1);
 		paneTableView.setVgap(5);
 		paneTableView.setHgap(15);
