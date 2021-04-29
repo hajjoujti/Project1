@@ -4,6 +4,5 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/javafx"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/PDFJet"/>
-	<classpathentry kind="lib" path="C:/Users/tunis/Desktop/pdfjet-5.75.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
