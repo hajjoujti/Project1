@@ -48,6 +48,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -58,13 +59,108 @@ public class InterfaceGraphique extends Application implements Parametre {
 	StagiaireDAO dao = new StagiaireDAO();
 	Desktop desktop;
 	private TextField affichage = new TextField("");
-	Label message = new Label();
 	private boolean activeMessage = false;
 
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		Stage primaryStage6 = new Stage();
+		AnchorPane anchorPane6 = new AnchorPane(); 
+		anchorPane6.setStyle("-fx-background-color: LIGHTGRAY;");
+
+		Button construire = new Button("Choisir");
+		Button continuer = new Button("Continuer");
+
+		Label lblConstruire = new Label("Choisir fichier .txt");
+		lblConstruire.setWrapText(true);
+		lblConstruire.setMaxWidth(325);
+		
+		Label lblContinuer = new Label("Continuer à la page principale");
+		lblContinuer.setWrapText(true);
+		lblContinuer.setMaxWidth(325);
+
+		GridPane grilleConstruire = new GridPane();
+
+		grilleConstruire.add(lblConstruire, 0, 0);
+		grilleConstruire.add(construire, 0, 1);
+		grilleConstruire.setVgap(10);
+		
+		GridPane grilleContinuer = new GridPane();
+		
+		grilleContinuer.add(lblContinuer, 0, 0);
+		grilleContinuer.add(continuer, 0, 1);
+		grilleContinuer.setVgap(10);
+
+		HBox box = new HBox();
+		box.getChildren().addAll(grilleConstruire, grilleContinuer);
+		box.setSpacing(60);
+		
+		box.setAlignment(Pos.BASELINE_CENTER);
+		box.setPadding(new Insets(60, 60, 60, 60));
+		
+		GridPane.setHalignment(construire, HPos.CENTER);
+		GridPane.setHalignment(continuer, HPos.CENTER);
+		
+		AnchorPane.setTopAnchor(grilleConstruire, 10.);
+		AnchorPane.setBottomAnchor(grilleConstruire, 10.);
+		AnchorPane.setLeftAnchor(grilleConstruire, 10.);
+		AnchorPane.setRightAnchor(grilleConstruire, 10.);
+
+		Label messagePrincipal = new Label();
+		
+		GridPane grilleTout = new GridPane();
+		grilleTout.add(box, 0, 0);
+		grilleTout.add(messagePrincipal, 0, 1);
+		GridPane.setHalignment(messagePrincipal, HPos.CENTER);
+		anchorPane6.getChildren().addAll(grilleTout);
+
+		Scene scene6 = new Scene(anchorPane6, 500, 220);
+		primaryStage6.setScene(scene6);
+		primaryStage6.sizeToScene();
+		primaryStage6.setTitle("Identification");
+		primaryStage6.show(); 
+
+		construire.setOnAction(new EventHandler<ActionEvent>(){
+
+			public void handle(ActionEvent event) {
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setTitle("Choisir fichier .txt");
+				File fichierTxt = fileChooser.showOpenDialog(primaryStage6);
+				if(fichierTxt != null) {
+					FichierInitial.lectureFichier(fichierTxt);
+					messagePrincipal.setTextFill(Color.web("#FF0000"));
+					messagePrincipal.setText("Fichier Stagiaires.bin créé");
+				} else {
+					messagePrincipal.setTextFill(Color.web("#FF0000"));
+					messagePrincipal.setText("Veuillez rechoisir un fichier pour construire ou appuyer sur Continuer.");
+				}
+			}
+
+		});
+		
+		continuer.setOnAction(new EventHandler<ActionEvent>(){
+
+			public void handle(ActionEvent event) {
+				if(fichierCible.exists()) {
+					try {
+						primaryStage6.close();
+						stageUtilisateur(primaryStage);
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				} else {
+					messagePrincipal.setTextFill(Color.web("#FF0000"));
+					messagePrincipal.setText("Veuillez choisir un fichier pour construire avant de continuer.");
+				}
+			}
+
+		});
+	}
+	@SuppressWarnings("unchecked")
+	private void stageUtilisateur(Stage primaryStage) throws FileNotFoundException {
 		AnchorPane anchorPane = new AnchorPane(); 
 		anchorPane.setStyle("-fx-background-color: DARKGREY;");
 		root.setStyle("-fx-background-color: LIGHTGRAY;");
@@ -117,6 +213,7 @@ public class InterfaceGraphique extends Application implements Parametre {
 		Button btnAjout = new Button("");
 		btnAjout.setGraphic(new ImageView(new Image(cheminIconAjout)));
 		paneTableView.add(btnAjout, 0, 0);
+		GridPane.setHalignment(btnAjout, HPos.RIGHT);
 		
 		paneTableView.add(tableView, 0, 1);
 		paneTableView.setVgap(5);
@@ -242,9 +339,7 @@ public class InterfaceGraphique extends Application implements Parametre {
 		hbox.setPadding(new Insets(0,20,0,0));
 		hbox.getChildren().addAll(btnRecherche, btnReini);
 
-
-
-		
+		Label message = new Label();
 		message.setTextFill(Color.web("#FF0000"));
 		Image image = new Image(new FileInputStream(chemingLogoEQL));  
 		//Setting the image view 
@@ -309,7 +404,9 @@ public class InterfaceGraphique extends Application implements Parametre {
 					ouvrirFichierDoc(message);
 				});
 
-		sceneBoutonAdmin(primaryStage, scene, observableStagiaire, admin, group);	
+		sceneBoutonAjout(observableStagiaire, btnAjout, tfNom, tfPrenom, tfDep, tfFormation, tfAnnee, message);
+		
+		sceneBoutonAdmin(primaryStage, scene, observableStagiaire, admin, group);
 	}
 	private void sceneBoutonAdmin(Stage primaryStage, Scene scene, ObservableList<Stagiaire> observableStagiaire,
 			Button admin, Group group) {
@@ -412,6 +509,7 @@ public class InterfaceGraphique extends Application implements Parametre {
 		AnchorPane.setLeftAnchor(root, 10.);
 		AnchorPane.setRightAnchor(root, 10.);
 
+		Label message = new Label();
 
 		Scene scene5 = new Scene(anchorPane, 1500, 800);
 		primaryStage5.setScene(scene5);
@@ -451,7 +549,7 @@ public class InterfaceGraphique extends Application implements Parametre {
 			@Override
 			public TableCell<Stagiaire, Void> call(final TableColumn<Stagiaire, Void> param) {
 				final TableCell<Stagiaire, Void> cell = boutonsSuppessionEtModification(observableStagiaire, colNom,
-						colPrenom, colDep, colFormation, colAnnee);
+						colPrenom, colDep, colFormation, colAnnee, message);
 				return cell;
 			}
 
@@ -598,6 +696,8 @@ public class InterfaceGraphique extends Application implements Parametre {
 		hbox.getChildren().addAll(btnRecherche, btnReini);
 		hbox.setAlignment(Pos.CENTER);
 		hbox.setPadding(new Insets(0,20,0,0));
+		
+		
 		message.setTextFill(Color.web("#FF0000"));
 
 		Image image2;
@@ -821,7 +921,7 @@ public class InterfaceGraphique extends Application implements Parametre {
 	private TableCell<Stagiaire, Void> boutonsSuppessionEtModification(
 			ObservableList<Stagiaire> observableStagiaire, TableColumn<Stagiaire, String> colNom,
 			TableColumn<Stagiaire, String> colPrenom, TableColumn<Stagiaire, String> colDep,
-			TableColumn<Stagiaire, String> colFormation, TableColumn<Stagiaire, Integer> colAnnee) {
+			TableColumn<Stagiaire, String> colFormation, TableColumn<Stagiaire, Integer> colAnnee, Label message) {
 		final TableCell<Stagiaire, Void> cell = new TableCell<Stagiaire, Void>() {
 			Button supp = new Button("");
 			Button modif = new Button("");
