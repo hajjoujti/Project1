@@ -45,14 +45,19 @@ public class GestionnaireFichier implements Parametre{
 				ecrireNouveauStagiaireDansFichier(parent);
 				// verification de la reference droite du parent et mettre a jour pour nouveau stagiaire
 				if (pointeurEnfantDroite != -1) {
-					raf.seek(pointeurParent + (tailleChampMax * 5) + tailleLong);
-					raf.writeLong(pointeurEnfantDroite);
+					Stagiaire parentNouveauStagiaire = mc.lireStagiaire(parent.getPositionParent());
+					parentNouveauStagiaire.setRefDroite(pointeurEnfantDroite);
+					raf.seek(parentNouveauStagiaire.getPositionStagiaire());
+					mc.ecrireStagiaire(parentNouveauStagiaire, raf);
 				}
 				// verification de la reference gauche du parent et mettre a jour pour nouveau stagiaire
 				if (pointeurEnfantGauche != -1) {
-					raf.seek(pointeurParent + (tailleChampMax * 5));
-					raf.writeLong(pointeurEnfantGauche);
+					Stagiaire parentNouveauStagiaire = mc.lireStagiaire(parent.getPositionParent());
+					parentNouveauStagiaire.setRefGauche(pointeurEnfantGauche);
+					raf.seek(parentNouveauStagiaire.getPositionStagiaire());
+					mc.ecrireStagiaire(parentNouveauStagiaire, raf);
 				}
+				System.out.println(parent);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -325,6 +330,7 @@ public class GestionnaireFichier implements Parametre{
 				} else {
 					stagiaireRemplacant.setRefGauche(stagiaireASupprimer.getRefGauche());
 					raf.seek(stagiaireASupprimer.getPositionStagiaire());
+					System.out.println("remplacant apres modif gauche " + stagiaireRemplacant);
 					mc.ecrireStagiaire(stagiaireRemplacant, raf);
 					parentDuStagiaireRemplacant.setRefDroite(-1);
 					raf.seek(parentDuStagiaireRemplacant.getPositionStagiaire());
