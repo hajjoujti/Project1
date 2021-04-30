@@ -71,26 +71,31 @@ public class InterfaceGraphique extends Application implements Parametre {
 		AnchorPane anchorPane6 = new AnchorPane(); 
 		anchorPane6.setStyle("-fx-background-color: LIGHTGRAY;");
 
-		Button construire = new Button("Choisir");
+		Button construire = new Button("Nouveau fichier");
 		Button continuer = new Button("Continuer");
+		construire.setPrefHeight(100);
+		construire.setPrefWidth(150);
 
-		Label lblConstruire = new Label("Choisir fichier .txt");
-		lblConstruire.setWrapText(true);
-		lblConstruire.setMaxWidth(325);
+		continuer.setPrefHeight(100);
+		continuer.setPrefWidth(150);
+
+//		Label lblConstruire = new Label("Choisir fichier .txt");
+//		lblConstruire.setWrapText(true);
+//		lblConstruire.setMaxWidth(325);
 		
-		Label lblContinuer = new Label("Continuer à la page principale");
-		lblContinuer.setWrapText(true);
-		lblContinuer.setMaxWidth(325);
+//		Label lblContinuer = new Label("Continuer à la page principale");
+//		lblContinuer.setWrapText(true);
+//		lblContinuer.setMaxWidth(325);
 
 		GridPane grilleConstruire = new GridPane();
 
-		grilleConstruire.add(lblConstruire, 0, 0);
+//		grilleConstruire.add(lblConstruire, 0, 0);
 		grilleConstruire.add(construire, 0, 1);
 		grilleConstruire.setVgap(10);
 		
 		GridPane grilleContinuer = new GridPane();
 		
-		grilleContinuer.add(lblContinuer, 0, 0);
+//		grilleContinuer.add(lblContinuer, 0, 0);
 		grilleContinuer.add(continuer, 0, 1);
 		grilleContinuer.setVgap(10);
 
@@ -117,7 +122,7 @@ public class InterfaceGraphique extends Application implements Parametre {
 		GridPane.setHalignment(messagePrincipal, HPos.CENTER);
 		anchorPane6.getChildren().addAll(grilleTout);
 
-		Scene scene6 = new Scene(anchorPane6, 500, 220);
+		Scene scene6 = new Scene(anchorPane6, 500, 300);
 		primaryStage6.setScene(scene6);
 		primaryStage6.sizeToScene();
 		primaryStage6.setTitle("Identification");
@@ -644,12 +649,20 @@ public class InterfaceGraphique extends Application implements Parametre {
 								} else {
 									Stagiaire stagiaireAModifier = (Stagiaire) t.getTableView().getItems().get(
 											t.getTablePosition().getRow());
-									System.out.println(stagiaireAModifier);
+									dao.supprimerStagiaire(stagiaireAModifier);
+									System.out.println("stagiaire a supp: " + stagiaireAModifier);
+//									observableStagiaire.setAll(dao.getAll());
+//									System.out.println(stagiaireAModifier);
 									Stagiaire stagiaireRemplacant = (Stagiaire) t.getTableView().getItems().get(
 											t.getTablePosition().getRow());
 									stagiaireRemplacant.setAnnee(t.getNewValue());
-									System.out.println(stagiaireRemplacant);
-									dao.modifierStagiaire(stagiaireAModifier, stagiaireRemplacant);
+									stagiaireRemplacant.setPositionParent(-1);
+									stagiaireRemplacant.setRefGauche(-1);
+									stagiaireRemplacant.setRefDroite(-1);
+									System.out.println("stagiaire a ajou: " + stagiaireRemplacant);
+									dao.ajoutNouveauStagiaire(stagiaireRemplacant);
+//									System.out.println(stagiaireRemplacant);
+//									dao.modifierStagiaire(stagiaireAModifier, stagiaireRemplacant);
 									observableStagiaire.setAll(dao.getAll());
 									message.setText("Stagiaire modifié.");
 								}
